@@ -1,0 +1,26 @@
+# Operating system junk
+.DS_Store
+Thumbs.db
+desktop.ini
+*.lnk
+
+# Editors
+.vscode/
+.idea/
+*.sublime-*
+*.swp
+
+# Logs / temp
+*.log
+npm-debug.log*
+tmp/
+temp/
+*.tmp
+
+# Dependencies (project intentionally has none - kept for safety)
+node_modules/
+package-lock.json
+
+# Local personal files
+notes-private/
+*.local.md

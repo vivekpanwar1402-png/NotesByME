@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="hi" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#f4f5fb" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0a0d16" media="(prefers-color-scheme: dark)" />
+    <meta
+      name="description"
+      content="NotesByME — कक्षा 10 सामाजिक विज्ञान (उत्तराखंड बोर्ड) की तैयारी के लिए इतिहास की महत्वपूर्ण तिथियाँ, क्विज़, रिवीज़न और प्रगति।"
+    />
+    <title>NotesByME</title>
+    <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg" />
+    <link rel="stylesheet" href="css/variables.css" />
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/global.css" />
+    <link rel="stylesheet" href="css/components.css" />
+    <link rel="stylesheet" href="css/responsive.css" />
+    <script>
+      /* Apply the saved (or system) theme before first paint to avoid a flash. */
+      (function () {
+        try {
+          var saved = localStorage.getItem("nbme.theme");
+          var dark =
+            saved === "dark" ||
+            (!saved && window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches);
+          document.documentElement.setAttribute("data-theme", dark ? "dark" : "light");
+        } catch (error) {
+          /* storage blocked: keep the default light theme */
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="app"></div>
+    <noscript>
+      <div style="max-width: 420px; margin: 20vh auto; padding: 24px; text-align: center; font-family: system-ui, sans-serif;">
+        <h1 style="font-size: 20px;">NotesByME</h1>
+        <p style="line-height: 1.7;">
+          इस वेबसाइट को चलाने के लिए JavaScript चाहिए। कृपया अपने ब्राउज़र में JavaScript चालू करें और पेज दोबारा खोलें।
+        </p>
+      </div>
+    </noscript>
+
+    <!-- Load order matters: helpers -> storage -> data -> components -> pages -> app -->
+    <script src="js/utils/helpers.js"></script>
+    <script src="js/utils/storage.js"></script>
+    <script src="js/data/history-dates.js"></script>
+    <script src="js/components/pin-lock.js"></script>
+    <script src="js/components/navigation.js"></script>
+    <script src="js/components/date-card.js"></script>
+    <script src="js/components/timeline.js"></script>
+    <script src="js/components/quiz-card.js"></script>
+    <script src="js/components/progress.js"></script>
+    <script src="js/pages/home.js"></script>
+    <script src="js/pages/history.js"></script>
+    <script src="js/pages/quiz.js"></script>
+    <script src="js/pages/revision.js"></script>
+    <script src="js/pages/progress.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

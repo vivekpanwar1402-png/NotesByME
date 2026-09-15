@@ -1,0 +1,166 @@
+/* ==========================================================================
+   NotesByME — Navigation (app header, bottom tab bar, theme switch)
+   Exposes NB.nav
+
+   TO NOTE: changing the visual theme is done in exactly one place
+   (NB.nav.theme.toggle) so nothing else has to know how theming works.
+   ========================================================================== */
+
+(function () {
+  "use strict";
+
+  var NB = (window.NB = window.NB || {});
+
+  var ROUTES = [
+    { id: "home", hash: "#/home", label: "होम", icon: "home" },
+    { id: "history", hash: "#/history", label: "इतिहास", icon: "book" },
+    { id: "quiz", hash: "#/quiz", label: "क्विज़", icon: "quiz" },
+    { id: "revision", hash: "#/revision", label: "रिवीज़न", icon: "revision" },
+    { id: "progress", hash: "#/progress", label: "प्रगति", icon: "progress" }
+  ];
+
+  var themeButtons = [];
+
+  /* ---------------------------------------------------------- theming ---- */
+
+  var theme = {
+    current: function () {
+      return document.documentElement.getAttribute("data-theme") === "dark" ? "dark" : "light";
+    },
+    apply: function (value) {
+      var next = value === "dark" ? "dark" : "light";
+      document.documentElement.setAttribute("data-theme", next);
+      NB.storage.setTheme(next);
+      refreshThemeButtons();
+      return next;
+    },
+    toggle: function () {
+      return theme.apply(theme.current() === "dark" ? "light" : "dark");
+    },
+    init: function () {
+      var stored = NB.storage.getTheme();
+      var initial = stored || NB.storage.systemTheme();
+      document.documentElement.setAttribute("data-theme", initial);
+      return initial;
+    }
+  };
+
+  function refreshThemeButtons() {
+    var helpers = NB.helpers;
+    var isDark = theme.current() === "dark";
+    themeButtons.forEach(function (button) {
+      if (!button || !button.parentNode) return;
+      helpers.clear(button);
+      button.appendChild(helpers.icon(isDark ? "sun" : "moon", 18));
+      button.setAttribute("aria-label", isDark ? "लाइट मोड चालू करें" : "डार्क मोड चालू करें");
+      button.setAttribute("title", isDark ? "लाइट मोड" : "डार्क मोड");
+      button.setAttribute("aria-pressed", isDark ? "true" : "false");
+    });
+  }
+
+  function themeButton() {
+    var helpers = NB.helpers;
+    var button = helpers.el("button", {
+      class: "icon-btn",
+      type: "button",
+      onclick: function () {
+        theme.toggle();
+      }
+    });
+    themeButtons.push(button);
+    refreshThemeButtons();
+    return button;
+  }
+
+  /* ----------------------------------------------------------- header ---- */
+
+  function navLink(route, className, activeId) {
+    var helpers = NB.helpers;
+    var link = helpers.el("a", { class: className, href: route.hash }, [
+      helpers.icon(route.icon, 16),
+      helpers.el("span", { text: route.label })
+    ]);
+    if (route.id === activeId) link.setAttribute("aria-current", "page");
+    return link;
+  }
+
+  function renderHeader(activeId) {
+    var helpers = NB.helpers;
+
+    var brand = helpers.el("a", { class: "brand", href: "#/home" }, [
+      helpers.el("span", { class: "brand__mark", text: "N" }),
+      helpers.el("span", { class: "brand__text" }, [
+        helpers.el("span", { class: "brand__name", text: "NotesByME" }),
+        helpers.el("span", { class: "brand__tag", text: "कक्षा 10 · सामाजिक विज्ञान" })
+      ])
+    ]);
+
+    var nav = helpers.el(
+      "nav",
+      { class: "nav", "aria-label": "मुख्य मेन्यू" },
+      ROUTES.map(function (route) {
+        return navLink(route, "nav__link", activeId);
+      })
+    );
+
+    var lockButton = helpers.el(
+      "button",
+      {
+        class: "icon-btn",
+        type: "button",
+        "aria-label": "लॉक करके PIN स्क्रीन पर जाएँ",
+        title: "लॉक करें",
+        onclick: function () {
+          NB.gate.lock();
+          NB.app.showGate();
+        }
+      },
+      [helpers.icon("lock", 18)]
+    );
+
+    return helpers.el(
+      "header",
+      { class: "app-header" },
+      helpers.el("div", { class: "app-header__inner" }, [
+        brand,
+        helpers.el("div", { class: "app-header__spacer" }, null),
+        nav,
+        helpers.el("div", { class: "header-actions" }, [themeButton(), lockButton])
+      ])
+    );
+  }
+
+  function renderBottomNav(activeId) {
+    return NB.helpers.el(
+      "nav",
+      { class: "bottom-nav", "aria-label": "मुख्य मेन्यू" },
+      ROUTES.map(function (route) {
+        return navLink(route, "bottom-nav__item", activeId);
+      })
+    );
+  }
+
+  function renderFooter() {
+    var helpers = NB.helpers;
+    var history = NB.data && NB.data.history ? NB.data.history : null;
+    var note = history && history.meta ? history.meta.note : "";
+    return helpers.el("footer", { class: "app-footer" }, [
+      helpers.el("p", { class: "app-footer__note", text: note })
+    ]);
+  }
+
+  NB.nav = {
+    ROUTES: ROUTES,
+    theme: theme,
+    renderHeader: renderHeader,
+    renderBottomNav: renderBottomNav,
+    renderFooter: renderFooter,
+    routeById: function (id) {
+      return (
+        ROUTES.filter(function (route) {
+          return route.id === id;
+        })[0] || ROUTES[0]
+      );
+    }
+  };
+})();

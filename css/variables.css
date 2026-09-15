@@ -1,0 +1,164 @@
+/* ==========================================================================
+   NotesByME — Design tokens (single source of truth for the visual system)
+   Light theme lives on :root, dark theme overrides via [data-theme="dark"].
+   ========================================================================== */
+
+:root {
+  color-scheme: light;
+
+  /* ---- Brand & semantic colours ------------------------------------- */
+  --primary: #4f46e5;
+  --primary-strong: #4338ca;
+  --primary-soft: #eef0ff;
+  --primary-contrast: #ffffff;
+  --accent: #0d9488;
+  --accent-soft: #e3f6f2;
+
+  --bg: #f4f5fb;
+  --bg-soft: #e9ebf6;
+  --surface: #ffffff;
+  --surface-2: #f8f9fd;
+  --surface-3: #f1f3fb;
+  --overlay: rgba(20, 24, 40, 0.5);
+
+  --border: #e2e5f0;
+  --border-strong: #cfd4e6;
+
+  --text: #16192a;
+  --text-muted: #565d75;
+  --text-subtle: #7d849c;
+
+  /* Importance scale (never used alone — always paired with a label) */
+  --must: #b3261e;
+  --must-soft: #fdeceb;
+  --must-border: #f6c9c5;
+
+  --important: #a35a06;
+  --important-soft: #fdf1de;
+  --important-border: #f2d9b0;
+
+  --extra: #4a5468;
+  --extra-soft: #eaeef6;
+  --extra-border: #d5dbe9;
+
+  --success: #1a7f43;
+  --success-soft: #e4f6ea;
+  --success-border: #bfe4cc;
+
+  --danger: #b3261e;
+  --danger-soft: #fdeceb;
+  --danger-border: #f6c9c5;
+
+  /* ---- Elevation ---------------------------------------------------- */
+  --shadow-xs: 0 1px 2px rgba(18, 22, 40, 0.06);
+  --shadow-sm: 0 1px 2px rgba(18, 22, 40, 0.06), 0 2px 6px -2px rgba(18, 22, 40, 0.1);
+  --shadow-md: 0 10px 24px -14px rgba(18, 22, 40, 0.24), 0 2px 6px rgba(18, 22, 40, 0.05);
+  --shadow-lg: 0 28px 60px -26px rgba(18, 22, 40, 0.34), 0 6px 16px -8px rgba(18, 22, 40, 0.12);
+  --focus-ring: 0 0 0 3px rgba(79, 70, 229, 0.32);
+
+  /* ---- Radius ------------------------------------------------------- */
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 14px;
+  --r-lg: 20px;
+  --r-xl: 26px;
+  --r-full: 999px;
+
+  /* ---- Spacing scale (4px base) ------------------------------------- */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 20px;
+  --sp-6: 24px;
+  --sp-7: 32px;
+  --sp-8: 40px;
+  --sp-9: 48px;
+  --sp-10: 64px;
+  --sp-11: 80px;
+
+  /* ---- Typography --------------------------------------------------- */
+  --font-sans: "Inter", "Segoe UI", system-ui, -apple-system, "Nirmala UI",
+    "Noto Sans Devanagari", "Mangal", Roboto, "Helvetica Neue", sans-serif;
+  --font-mono: "JetBrains Mono", "Cascadia Mono", Consolas, "Courier New", monospace;
+
+  --fs-xs: 12.5px;
+  --fs-sm: 14px;
+  --fs-base: 16px;
+  --fs-md: 17.5px;
+  --fs-lg: 20px;
+  --fs-xl: 24px;
+  --fs-2xl: 29px;
+  --fs-3xl: 36px;
+
+  --lh-tight: 1.28;
+  --lh-normal: 1.55;
+  --lh-relaxed: 1.8; /* Devanagari needs generous leading */
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* ---- Motion ------------------------------------------------------- */
+  --t-fast: 130ms;
+  --t-base: 190ms;
+  --t-slow: 320ms;
+  --ease: cubic-bezier(0.2, 0.7, 0.3, 1);
+
+  /* ---- Layout ------------------------------------------------------- */
+  --container: 1140px;
+  --header-h: 62px;
+  --bottom-nav-h: 66px;
+}
+
+[data-theme="dark"] {
+  color-scheme: dark;
+
+  --primary: #6f6cf7;
+  --primary-strong: #8582fb;
+  --primary-soft: rgba(111, 108, 247, 0.16);
+  --primary-contrast: #ffffff;
+  --accent: #2dd4bf;
+  --accent-soft: rgba(45, 212, 191, 0.14);
+
+  --bg: #0a0d16;
+  --bg-soft: #0e1220;
+  --surface: #141a29;
+  --surface-2: #1a2133;
+  --surface-3: #1f273b;
+  --overlay: rgba(4, 6, 12, 0.68);
+
+  --border: #26304a;
+  --border-strong: #35426a;
+
+  --text: #e9edf8;
+  --text-muted: #a5aec5;
+  --text-subtle: #7d879f;
+
+  --must: #ff8a80;
+  --must-soft: rgba(255, 138, 128, 0.14);
+  --must-border: rgba(255, 138, 128, 0.34);
+
+  --important: #f7c15c;
+  --important-soft: rgba(247, 193, 92, 0.14);
+  --important-border: rgba(247, 193, 92, 0.32);
+
+  --extra: #a9b3c9;
+  --extra-soft: rgba(169, 179, 201, 0.12);
+  --extra-border: rgba(169, 179, 201, 0.26);
+
+  --success: #57d98e;
+  --success-soft: rgba(87, 217, 142, 0.14);
+  --success-border: rgba(87, 217, 142, 0.32);
+
+  --danger: #ff8a80;
+  --danger-soft: rgba(255, 138, 128, 0.14);
+  --danger-border: rgba(255, 138, 128, 0.34);
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 2px 8px -2px rgba(0, 0, 0, 0.5);
+  --shadow-md: 0 14px 30px -18px rgba(0, 0, 0, 0.75), 0 2px 8px rgba(0, 0, 0, 0.35);
+  --shadow-lg: 0 32px 70px -30px rgba(0, 0, 0, 0.85), 0 8px 20px -10px rgba(0, 0, 0, 0.5);
+  --focus-ring: 0 0 0 3px rgba(111, 108, 247, 0.42);
+}

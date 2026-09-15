@@ -1,0 +1,219 @@
+/* ==========================================================================
+   NotesByME — Responsive layer (mobile-first)
+   Breakpoints: 560 (large phone) · 760 (tablet) · 900 (small laptop) · 1200
+   ========================================================================== */
+
+/* ---------------------------------------------- base (small phones) ------ */
+.app-main {
+  padding-bottom: calc(var(--bottom-nav-h) + var(--sp-7));
+}
+
+.app-footer {
+  padding-bottom: calc(var(--bottom-nav-h) + var(--sp-6));
+}
+
+.quiz-result__score {
+  font-size: 40px;
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.toolbar__row {
+  display: flex;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+}
+
+.toolbar__grow {
+  flex: 1 1 240px;
+  min-width: 0;
+}
+
+/* Very narrow phones (<=360px) — keep touch targets usable */
+@media (max-width: 360px) {
+  :root {
+    --fs-base: 15.5px;
+  }
+
+  .key {
+    min-height: 52px;
+    font-size: var(--fs-md);
+  }
+
+  .hero,
+  .card--feature {
+    padding: var(--sp-4);
+  }
+}
+
+/* ------------------------------------------------- large phones (560) --- */
+@media (min-width: 560px) {
+  .app-main {
+    padding-inline: var(--sp-5);
+  }
+
+  .card-grid--dates {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .stat-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .quiz-result__score {
+    font-size: 52px;
+  }
+
+  .lock__card {
+    padding: var(--sp-7) var(--sp-6) var(--sp-6);
+  }
+
+  .timeline {
+    padding-left: 34px;
+  }
+}
+
+/* ------------------------------------------------------- tablets (760) --- */
+@media (min-width: 760px) {
+  .app-main {
+    padding-block: var(--sp-7) calc(var(--bottom-nav-h) + var(--sp-8));
+  }
+
+  .card-grid--dates {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .toolbar {
+    flex-direction: row;
+    align-items: flex-end;
+    gap: var(--sp-4);
+  }
+
+  .toolbar__row {
+    flex: 1 1 auto;
+  }
+
+  .toolbar__side {
+    flex: none;
+  }
+
+  /* Centred dialog instead of bottom sheet */
+  .modal {
+    align-items: center;
+    padding: var(--sp-5);
+  }
+
+  .modal__panel {
+    border-radius: var(--r-xl);
+    border-bottom: 1px solid var(--border);
+    max-height: 86vh;
+  }
+
+  .modal__foot {
+    border-radius: 0 0 0 0;
+  }
+
+  .detail__hero {
+    padding: var(--sp-5) var(--sp-6);
+  }
+
+  .detail__date {
+    font-size: var(--fs-3xl);
+  }
+
+  .flashcard {
+    min-height: 380px;
+    padding: var(--sp-8) var(--sp-7);
+  }
+
+  .quiz-shell {
+    padding: var(--sp-6);
+  }
+
+  .section--split {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: var(--sp-5);
+    align-items: start;
+  }
+}
+
+/* --------------------------------------------------- small laptops (900) */
+@media (min-width: 900px) {
+  .nav {
+    display: inline-flex;
+  }
+
+  .bottom-nav {
+    display: none;
+  }
+
+  .app-main {
+    padding-block: var(--sp-8) var(--sp-9);
+  }
+
+  .app-footer {
+    padding-bottom: var(--sp-8);
+  }
+
+  .stat-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .hero {
+    padding: var(--sp-8) var(--sp-7);
+  }
+
+  .hero__stats {
+    gap: var(--sp-3) var(--sp-8);
+  }
+
+  .card--feature {
+    padding: var(--sp-7);
+  }
+
+  .bottom-pad {
+    padding-bottom: 0;
+  }
+}
+
+/* ------------------------------------------------------- desktops (1200) */
+@media (min-width: 1200px) {
+  .card-grid--dates {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+/* ------------------------------------------- landscape / short screens --- */
+@media (max-height: 720px) and (max-width: 899px) {
+  .lock {
+    align-items: flex-start;
+  }
+}
+
+/* ------------------------------------------------------------- printing -- */
+@media print {
+  .app-header,
+  .bottom-nav,
+  .toolbar,
+  .quiz-actions,
+  .modal__foot,
+  .app-footer {
+    display: none !important;
+  }
+
+  body {
+    background: #ffffff;
+  }
+
+  .date-card,
+  .card {
+    box-shadow: none;
+    border-color: #cccccc;
+    break-inside: avoid;
+  }
+}
