@@ -76,7 +76,7 @@
           class: "key",
           type: "button",
           text: label,
-          "aria-label": "अंक " + label,
+          "aria-label": "Digit " + label,
           onclick: function () {
             addDigit(ui, label);
           }
@@ -89,7 +89,7 @@
         class: "key key--fn",
         type: "button",
         text: "C",
-        "aria-label": "साफ़ करें",
+        "aria-label": "Clear",
         onclick: function () {
           clearDigits(ui);
         }
@@ -101,7 +101,7 @@
         class: "key",
         type: "button",
         text: "0",
-        "aria-label": "अंक 0",
+        "aria-label": "Digit 0",
         onclick: function () {
           addDigit(ui, "0");
         }
@@ -114,7 +114,7 @@
         {
           class: "key key--fn",
           type: "button",
-          "aria-label": "पिछला अंक मिटाएँ",
+          "aria-label": "Delete last digit",
           onclick: function () {
             removeDigit(ui);
           }
@@ -137,8 +137,8 @@
     var ready = ui.digits.length === PIN_LENGTH;
     ui.unlockButton.disabled = !ready;
     ui.hint.textContent = ready
-      ? "अनलॉक करने के लिए बटन दबाएँ या Enter दबाएँ।"
-      : "कीबोर्ड से भी PIN टाइप कर सकते हैं।";
+      ? "Press the button or hit Enter to unlock."
+      : "You can also type the PIN from your keyboard.";
   }
 
   function syncInput(ui) {
@@ -193,9 +193,9 @@
     }
 
     ui.attempts += 1;
-    var message = "ग़लत PIN। कृपया दोबारा प्रयास करें।";
+    var message = "Wrong PIN. Please try again.";
     if (ui.attempts >= MAX_HINTS) {
-      message = "ग़लत PIN (प्रयास " + ui.attempts + ")। ध्यान से दोबारा डालें।";
+      message = "Wrong PIN (attempt " + ui.attempts + "). Please try carefully.";
     }
     showError(ui, message);
     ui.digits = "";
@@ -255,7 +255,7 @@
       inputmode: "numeric",
       autocomplete: "off",
       maxlength: String(PIN_LENGTH),
-      "aria-label": "4 अंकों का PIN दर्ज करें"
+      "aria-label": "Enter 4-digit PIN"
     });
 
     var dotsRow = helpers.el("div", { class: "lock__dots", "aria-hidden": "true" });
@@ -270,7 +270,7 @@
     var unlockButton = helpers.el(
       "button",
       { class: "btn btn--primary btn--lg btn--block", type: "submit" },
-      [helpers.el("span", { class: "btn__label" }, [helpers.icon("lock", 18), "अनलॉक करें"])]
+      [helpers.el("span", { class: "btn__label" }, [helpers.icon("lock", 18), "Unlock"])]
     );
 
     var form = helpers.el("form", { class: "lock__form", novalidate: true }, [
@@ -288,7 +288,7 @@
           helpers.el("h1", { class: "lock__title", text: "NotesByME" }),
           helpers.el("p", {
             class: "lock__sub",
-            text: "कक्षा 10 सामाजिक विज्ञान · इतिहास की महत्वपूर्ण तिथियाँ"
+            text: "Class 10 Social Science · Important History Dates"
           })
         ]),
         form,

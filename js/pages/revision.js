@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    NotesByME — Quick Revision (lightweight flashcards)
    Reuses the history dataset; marks a date as reviewed when its answer is
    revealed. The advanced spaced-repetition system is intentionally NOT part
@@ -60,9 +60,9 @@
 
   function frontFace(item) {
     return H.el("div", { class: "flashcard__front" }, [
-      H.el("span", { class: "flashcard__label", text: "इस तारीख को क्या हुआ था?" }),
+      H.el("span", { class: "flashcard__label", text: "इस Date को What happened था?" }),
       H.el("p", { class: "flashcard__date", text: item.date }),
-      H.el("span", { class: "badge badge--neutral", text: "अध्याय " + NB.cards.chapterNumber(item.chapter) }),
+      H.el("span", { class: "badge badge--neutral", text: "Chapter " + NB.cards.chapterNumber(item.chapter) }),
       H.el(
         "button",
         {
@@ -70,7 +70,7 @@
           type: "button",
           onclick: reveal
         },
-        [H.el("span", { class: "btn__label" }, [H.icon("eye", 17), "उत्तर देखें"])]
+        [H.el("span", { class: "btn__label" }, [H.icon("eye", 17), "View answer"])]
       )
     ]);
   }
@@ -83,7 +83,7 @@
       ]),
       H.el("div", { class: "flashcard__actions" }, [
         H.el("button", { class: "btn btn--ghost", type: "button", onclick: renderCard }, [
-          H.el("span", { class: "btn__label" }, [H.icon("eye", 16), "दोबारा देखें"])
+          H.el("span", { class: "btn__label" }, [H.icon("eye", 16), "View again"])
         ]),
         H.el("button", { class: "btn btn--primary", type: "button", onclick: next }, [
           H.el("span", { class: "btn__label" }, [
@@ -98,11 +98,11 @@
   function completionCard() {
     return H.el("div", { class: "card" }, [
       NB.ui.emptyState(
-        "सत्र पूरा हुआ!",
+        "Session complete!",
         state.rounds > 0
-          ? "आपने यह डेक " + (state.rounds + 1) + " बार दोहरा लिया। नया क्रम लेकर फिर से शुरू करें या क्विज़ में अपनी तैयारी जाँचें।"
-          : "अच्छा किया! डेक दोबारा शुरू करें या क्विज़ देकर अपनी तैयारी जाँचें।",
-        "फिर से शुरू करें",
+          ? "You went through this deck " + (state.rounds + 1) + " times। Get a new orderेकर फिर से Start या Quiz में अपनी तैयारी जाँचें।"
+          : "Good job! डेक दोबारा Start या Quiz देकर अपनी तैयारी जाँचें।",
+        "फिर से Start",
         function () {
           buildDeck();
           renderCard();
@@ -140,7 +140,7 @@
   function levelToggle() {
     var row = H.el(
       "div",
-      { class: "segmented", role: "group", "aria-label": "रिवीज़न का स्तर" },
+      { class: "segmented", role: "group", "aria-label": "Revision का स्तर" },
       LEVELS.map(function (level) {
         var active = state.level === level.id;
         return H.el("button", {
@@ -216,7 +216,7 @@
           renderCard();
         }
       },
-      [H.el("span", { class: "btn__label" }, [H.icon("shuffle", 16), "क्रम बदलें"])]
+      [H.el("span", { class: "btn__label" }, [H.icon("shuffle", 16), "Shuffle"])]
     );
 
     document.removeEventListener("keydown", onKeydown);
@@ -225,14 +225,14 @@
     root.appendChild(
       H.el("div", { class: "page" }, [
         H.el("div", { class: "page-head" }, [
-          H.el("p", { class: "page-head__eyebrow", text: "तेज़ दोहराव · इतिहास" }),
-          H.el("h1", { class: "page-head__title", text: "रिवीज़न" }),
+          H.el("p", { class: "page-head__eyebrow", text: "तेज़ revision · इतिहास" }),
+          H.el("h1", { class: "page-head__title", text: "Revision" }),
           H.el("p", {
             class: "page-head__sub",
             text:
               "कुल " +
               available +
-              " तिथियाँ इस स्तर में हैं। तारीख देखकर घटना याद करें, फिर उत्तर देखकर अपने आप की जाँच करें। उत्तर देखने पर वह तिथि प्रगति में समीक्षित दर्ज हो जाएगी।"
+              " dates are in this level। Date देखकर Event याद करें, फिर Check yourself by viewing the answer। उत्तर देखने पर वह तिथि Progress में Reviewed दर्ज हो जाएगी।"
           })
         ]),
         H.el("div", { class: "row-flex" }, [levelToggle(), shuffleButton]),

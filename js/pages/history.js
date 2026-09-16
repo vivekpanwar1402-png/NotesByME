@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    NotesByME — History Dates page
    Chapter / importance / text filtering + cards & timeline views.
    Filter state is remembered in localStorage (via NB.storage prefs).
@@ -64,16 +64,16 @@
     var container = H.clear(refs.results);
 
     refs.count.textContent = isFiltered()
-      ? list.length + " तिथियाँ मिलीं"
-      : "कुल " + list.length + " तिथियाँ";
+      ? list.length + " dates found"
+      : "Total " + list.length + " dates";
     refs.reset.hidden = !isFiltered();
 
     if (!list.length) {
       container.appendChild(
         NB.ui.emptyState(
-          "कोई तिथि नहीं मिली",
-          "खोज शब्द बदलें या फ़िल्टर हटाकर दोबारा देखें। उदाहरण: 1919, गांधीजी, नमक, असहयोग।",
-          "फ़िल्टर हटाएँ",
+          "No dates found",
+          "Change your search term or remove filters and try again. Example: 1919, Gandhi, salt, non-cooperation.",
+          "Clear filters",
           resetFilters,
           "search"
         )
@@ -137,7 +137,7 @@
     var clear = helpers.el("button", {
       class: "input-clear",
       type: "button",
-      "aria-label": "खोज साफ़ करें",
+      "aria-label": "Clear search",
       hidden: true,
       onclick: function () {
         field.value = "";
@@ -154,8 +154,8 @@
       class: "input input--with-icon",
       type: "search",
       id: "history-search",
-      placeholder: "तिथि, घटना या शब्द खोजें… (जैसे: 1919, नमक)",
-      "aria-label": "तिथियाँ खोजें",
+      placeholder: "Search dates, events, or keywords… (e.g.: 1919, salt)",
+      "aria-label": "Search dates",
       value: state.query,
       oninput: function () {
         state.query = field.value;
@@ -169,7 +169,7 @@
     refs.clearSearch = clear;
 
     return helpers.el("div", { class: "field toolbar__grow" }, [
-      helpers.el("label", { class: "field__label", for: "history-search", text: "खोज" }),
+      helpers.el("label", { class: "field__label", for: "history-search", text: "Search" }),
       helpers.el("div", { class: "input-wrap" }, [
         helpers.el("span", { class: "input-wrap__icon" }, [helpers.icon("search", 17)]),
         field,
@@ -181,7 +181,7 @@
   function chapterChips() {
     var chapters = NB.data.history.chapters;
     var counts = H.countBy(allDates(), "chapter");
-    var row = H.el("div", { class: "chips", role: "group", "aria-label": "अध्याय चुनें" }, [
+    var row = H.el("div", { class: "chips", role: "group", "aria-label": "Select chapter" }, [
       H.el(
         "button",
         {
@@ -196,7 +196,7 @@
             renderResults();
           }
         },
-        [H.el("span", { text: "सभी अध्याय" }), H.el("span", { class: "chip__count", text: String(allDates().length) })]
+        [H.el("span", { text: "All Chapters" }), H.el("span", { class: "chip__count", text: String(allDates().length) })]
       )
     ]);
 
@@ -218,7 +218,7 @@
             }
           },
           [
-            H.el("span", { text: "अध्याय " + chapter.number }),
+            H.el("span", { text: "Chapter " + chapter.number }),
             H.el("span", { class: "chip__count", text: String(counts[chapter.id] || 0) })
           ]
         )
@@ -230,7 +230,7 @@
   }
 
   function importanceToggle() {
-    var options = [{ key: "all", label: "सभी" }].concat(
+    var options = [{ key: "all", label: "All" }].concat(
       H.IMPORTANCE_ORDER.map(function (key) {
         return { key: key, label: H.importance(key).short };
       })
@@ -238,7 +238,7 @@
 
     var row = H.el(
       "div",
-      { class: "segmented", role: "group", "aria-label": "महत्व के अनुसार छाँटें" },
+      { class: "segmented", role: "group", "aria-label": "Filter by importance" },
       options.map(function (option) {
         var active = state.importance === option.key;
         return H.el("button", {
@@ -263,13 +263,13 @@
 
   function viewToggle() {
     var options = [
-      { key: "cards", label: "कार्ड", icon: "layers" },
-      { key: "timeline", label: "समयरेखा", icon: "progress" }
+      { key: "cards", label: "Cards", icon: "layers" },
+      { key: "timeline", label: "Timeline", icon: "progress" }
     ];
 
     var row = H.el(
       "div",
-      { class: "segmented", role: "group", "aria-label": "देखने का तरीका" },
+      { class: "segmented", role: "group", "aria-label": "View style" },
       options.map(function (option) {
         var active = state.view === option.key;
         return H.el(
@@ -315,16 +315,16 @@
 
     var summary =
       meta.sourceBook +
-      " · कुल " +
+      " · Total " +
       total +
-      " तिथियाँ · अवश्य याद रखें: " +
+      " dates · अवश्य याद रखें: " +
       mustCount +
-      "। खोजें, छाँटें और किसी भी तिथि पर टैप करके विवरण देखें।";
+      "। खोजें, छाँटें और किसी भी तिथि पर टैप करके View details।";
 
     var page = helpers.el("div", { class: "page" }, [
       helpers.el("div", { class: "page-head" }, [
-        helpers.el("p", { class: "page-head__eyebrow", text: "इतिहास · कक्षा 10" }),
-        helpers.el("h1", { class: "page-head__title", text: "महत्वपूर्ण तिथियाँ" }),
+        helpers.el("p", { class: "page-head__eyebrow", text: "History · Class 10" }),
+        helpers.el("h1", { class: "page-head__title", text: "Important Dates" }),
         helpers.el("p", { class: "page-head__sub", text: summary })
       ]),
       helpers.el("div", { class: "toolbar" }, [

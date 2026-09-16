@@ -83,9 +83,9 @@
   /* ------------------------------------------------------- importance ------ */
 
   var IMPORTANCE = {
-    must: { key: "must", label: "अवश्य याद रखें", short: "अवश्य", icon: "star" },
-    important: { key: "important", label: "महत्वपूर्ण", short: "महत्वपूर्ण", icon: "flag" },
-    extra: { key: "extra", label: "अतिरिक्त", short: "अतिरिक्त", icon: "info" }
+    must: { key: "must", label: "Must Remember", short: "Must", icon: "star" },
+    important: { key: "important", label: "Important", short: "Important", icon: "flag" },
+    extra: { key: "extra", label: "Extra", short: "Extra", icon: "info" }
   };
 
   var IMPORTANCE_ORDER = ["must", "important", "extra"];
@@ -323,7 +323,7 @@
     var panel = el("div", { class: "modal__panel" });
     var closeBtn = el(
       "button",
-      { class: "icon-btn", type: "button", "aria-label": "बंद करें" },
+      { class: "icon-btn", type: "button", "aria-label": "Close" },
       icon("close", 18)
     );
 

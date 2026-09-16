@@ -1,9 +1,9 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    NotesByME — Quiz engine (single engine, two question-generation modes)
    --------------------------------------------------------------------------
    Modes:
-     "date-to-event" : तारीख दी है -> सही घटना चुनें
-     "event-to-date" : घटना दी है -> सही तारीख चुनें
+     "date-to-event" : Date दी है -> सही Event चुनें
+     "event-to-date" : Event दी है -> सही Date चुनें
    The engine only reads NB.data.history.dates, so expanding the dataset
    automatically expands the quiz. Exposes NB.quiz
    ========================================================================== */
@@ -17,19 +17,19 @@
   var MODES = {
     "date-to-event": {
       id: "date-to-event",
-      label: "तारीख → घटना",
+      label: "Date → Event",
       questionField: "date",
       answerField: "event",
-      prompt: "इस तारीख से जुड़ी सही घटना कौन-सी है?",
-      answerHint: "सही घटना चुनें"
+      prompt: "इस Date से जुड़ी सही Event कौन-सी है?",
+      answerHint: "सही Event चुनें"
     },
     "event-to-date": {
       id: "event-to-date",
-      label: "घटना → तारीख",
+      label: "Event → Date",
       questionField: "event",
       answerField: "date",
-      prompt: "यह घटना कब हुई थी?",
-      answerHint: "सही तारीख चुनें"
+      prompt: "यह Event कब हुई थी?",
+      answerHint: "सही Date चुनें"
     }
   };
 
@@ -129,7 +129,7 @@
   function progressLine(current, total) {
     return H.el("div", { class: "progress progress--thin" }, [
       H.el("div", { class: "progress__meta" }, [
-        H.el("span", { text: "प्रश्न " + current + " / " + total }),
+        H.el("span", { text: "Questions " + current + " / " + total }),
         H.el("b", { text: H.percent(current - 1, total) + "%" })
       ]),
       H.el("div", { class: "progress__track" }, [
@@ -223,18 +223,18 @@
             },
             [
               H.el("span", { class: "btn__label" }, [
-                H.el("span", { text: isLast ? "परिणाम देखें" : "अगला प्रश्न" }),
+                H.el("span", { text: isLast ? "View results" : "Next question" }),
                 H.icon(isLast ? "trophy" : "arrowRight", 16)
               ])
             ]
           )
-        : H.el("span", { class: "text-sm text-subtle", text: "एक विकल्प चुनें" })
+        : H.el("span", { class: "text-sm text-subtle", text: "एक Options चुनें" })
     ]);
 
     return H.el("div", { class: "quiz-shell" }, [
       H.el("div", { class: "quiz-head" }, [
         H.el("span", { class: "badge badge--neutral", text: modeInfo(question.mode).label }),
-        H.el("span", { class: "quiz-counter", text: "अंक: " + state.score + " / " + state.answeredCount })
+        H.el("span", { class: "quiz-counter", text: "Marks: " + state.score + " / " + state.answeredCount })
       ]),
       progressLine(state.index + 1, state.questions.length),
       H.el("div", { class: "quiz-question" }, [
@@ -253,20 +253,20 @@
     var pct = H.percent(score, total);
 
     var band = {
-      title: "अभ्यास जारी रखें",
-      text: "पहले रिवीज़न करें, फिर यही क्विज़ दोबारा दें। हर प्रयास में सुधार दिखेगा।",
+      title: "Keep Practicing",
+      text: "पहले Revision करें, फिर यही Quiz दोबारा दें। हर प्रयास में सुधार दिखेगा।",
       icon: "revision"
     };
     if (pct >= 80) {
       band = {
-        title: "बहुत बढ़िया!",
-        text: "इन तिथियों पर आपकी पकड़ मजबूत है। अब दूसरा मोड आज़माकर देखें।",
+        title: "Excellent!",
+        text: "इन तिथियों पर आपकी पकड़ मजबूत है। अब दूसरा Mode आज़माकर देखें।",
         icon: "trophy"
       };
     } else if (pct >= 60) {
       band = {
-        title: "अच्छा प्रयास",
-        text: "जो प्रश्न ग़लत हुए, उनकी तिथियाँ इतिहास पेज से दोबारा पढ़ें और फिर क्विज़ दोहराएँ।",
+        title: "Good Try",
+        text: "जो Questions ग़लत हुए, उनकी तिथियाँ इतिहास पेज से दोबारा पढ़ें और फिर Quiz दोहराएँ।",
         icon: "checkCircle"
       };
     }
@@ -281,7 +281,7 @@
             if (typeof handlers.onRetry === "function") handlers.onRetry();
           }
         },
-        [H.el("span", { class: "btn__label" }, [H.icon("revision", 16), "फिर से करें"])]
+        [H.el("span", { class: "btn__label" }, [H.icon("revision", 16), "Try again"])]
       ),
       H.el(
         "button",
@@ -292,7 +292,7 @@
             if (typeof handlers.onSwitchMode === "function") handlers.onSwitchMode();
           }
         },
-        [H.el("span", { class: "btn__label" }, [H.icon("shuffle", 16), "मोड बदलें"])]
+        [H.el("span", { class: "btn__label" }, [H.icon("shuffle", 16), "Mode बदलें"])]
       )
     ]);
 
@@ -301,7 +301,7 @@
         H.el("div", { class: "ring", style: "--pct:" + pct }, [
           H.el("span", { class: "ring__inner" }, [
             H.el("span", { class: "ring__value", text: pct + "%" }),
-            H.el("span", { class: "ring__label", text: "स्कोर" })
+            H.el("span", { class: "ring__label", text: "Score" })
           ])
         ]),
         H.el("p", { class: "quiz-result__score" }, [
@@ -315,7 +315,7 @@
         H.el("p", { class: "quiz-result__text", text: band.text }),
         H.el("p", {
           class: "text-sm text-subtle",
-          text: "यह अंक आपकी प्रगति पेज में दर्ज कर लिया गया है।"
+          text: "These marks have been saved to your Progress page।"
         }),
         actions
       ])

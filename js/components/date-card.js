@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    NotesByME — Date card + date detail sheet
    Reusable presentation for one history record. No data lives in this file.
    Exposes NB.cards (dateCard, openDetail, importanceBadge, chapterTitle)
@@ -26,7 +26,7 @@
     var match = chapterList().filter(function (chapter) {
       return chapter.id === chapterId;
     })[0];
-    return match ? "अध्याय " + match.number + " · " + match.title : chapterTitle(chapterId);
+    return match ? "Chapter " + match.number + " · " + match.title : chapterTitle(chapterId);
   }
 
   function importanceBadge(level) {
@@ -40,7 +40,7 @@
   function reviewedBadge() {
     return H.el("span", { class: "badge badge--accent" }, [
       H.icon("check", 13),
-      H.el("span", { text: "समीक्षित" })
+      H.el("span", { text: "Reviewed" })
     ]);
   }
 
@@ -54,7 +54,7 @@
       {
         class: "date-card date-card--" + item.importance,
         type: "button",
-        "aria-label": item.date + " — " + item.event + ". विवरण देखें",
+        "aria-label": item.date + " — " + item.event + ". View details",
         onclick: function () {
           if (typeof settings.onOpen === "function") settings.onOpen(item, card);
         }
@@ -63,7 +63,7 @@
         H.el("div", { class: "date-card__head" }, [
           H.el("span", { class: "date-card__date", text: item.date }),
           H.el("span", { class: "row-flex" }, [
-            item.approximate ? H.el("span", { class: "tag-soon", text: "लगभग" }) : null,
+            item.approximate ? H.el("span", { class: "tag-soon", text: "Approx" }) : null,
             reviewed ? reviewedBadge() : null,
             importanceBadge(item.importance)
           ])
@@ -73,10 +73,10 @@
         H.el("div", { class: "date-card__foot" }, [
           H.el("span", { class: "date-card__chapter" }, [
             H.icon("book", 14),
-            H.el("span", { text: "अध्याय " + chapterNumber(item.chapter) })
+            H.el("span", { text: "Chapter " + chapterNumber(item.chapter) })
           ]),
           H.el("span", { class: "date-card__more" }, [
-            H.el("span", { text: "विवरण" }),
+            H.el("span", { text: "Details" }),
             H.icon("arrowRight", 14)
           ])
         ])
@@ -125,18 +125,18 @@
             importanceBadge(item.importance),
             H.el("span", { class: "badge badge--neutral" }, [
               H.icon("book", 13),
-              H.el("span", { text: "अध्याय " + chapterNumber(item.chapter) })
+              H.el("span", { text: "Chapter " + chapterNumber(item.chapter) })
             ])
           ]),
           item.approximate
-            ? H.el("span", { class: "text-sm text-subtle", text: "यह तिथि लगभग मानी जाती है।" })
+            ? H.el("span", { class: "text-sm text-subtle", text: "This date is considered approximate।" })
             : null
         ])
       ])
     );
 
-    blocks.push(detailBlock("क्या हुआ?", item.shortExplanation, "book"));
-    blocks.push(detailBlock("परीक्षा में महत्व", item.examConnection, "target", true));
+    blocks.push(detailBlock("What happened?", item.shortExplanation, "book"));
+    blocks.push(detailBlock("Exam importance", item.examConnection, "target", true));
 
     var related = (item.relatedIds || []).map(findDate).filter(Boolean);
     if (related.length) {
@@ -144,7 +144,7 @@
         H.el("div", { class: "detail-block" }, [
           H.el("h3", { class: "detail-block__title" }, [
             H.icon("layers", 14),
-            H.el("span", { text: "इससे जुड़ी तिथियाँ" })
+            H.el("span", { text: "Related dates" })
           ]),
           H.el(
             "div", { class: "list" },
@@ -187,21 +187,21 @@
     if (NB.storage.isReviewed(item.id)) {
       H.clear(markButton);
       markButton.appendChild(
-        H.el("span", { class: "btn__label" }, [H.icon("check", 16), "समीक्षित"] )
+        H.el("span", { class: "btn__label" }, [H.icon("check", 16), "Reviewed"] )
       );
       markButton.disabled = true;
     } else {
       markButton.appendChild(
         H.el("span", { class: "btn__label" }, [
           H.icon("check", 16),
-          "समीक्षित के रूप में चिह्नित करें"
+          "Reviewed के रूप में चिह्नित करें"
         ])
       );
       markButton.addEventListener("click", function () {
         NB.storage.markReviewed(item.id);
         H.clear(markButton);
         markButton.appendChild(
-          H.el("span", { class: "btn__label" }, [H.icon("checkCircle", 16), "समीक्षित के रूप में जोड़ लिया गया"])
+          H.el("span", { class: "btn__label" }, [H.icon("checkCircle", 16), "Reviewed के रूप में जोड़ लिया गया"])
         );
         markButton.disabled = true;
         if (typeof settings.onReviewed === "function") settings.onReviewed(item);

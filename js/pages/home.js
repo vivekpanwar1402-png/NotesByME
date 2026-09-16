@@ -24,16 +24,16 @@
   function featureCard(stats) {
     return H.el("div", { class: "card card--feature" }, [
       H.el("span", { class: "card__icon" }, [H.icon("book", 20)]),
-      H.el("h2", { class: "card__title", text: "इतिहास — महत्वपूर्ण तिथियाँ" }),
+      H.el("h2", { class: "card__title", text: "History — Important Dates" }),
       H.el("p", {
         class: "card__text",
         text:
           stats.total +
-          " सत्यापित तिथियाँ, सभी 5 अध्यायों से। खोजें, फ़िल्टर करें, समयरेखा में देखें और हर तिथि का परीक्षा-केंद्रित विवरण पढ़ें।"
+          " verified dates, from all 5 chapters. Search, filter, view in timeline, and read exam-focused details for every date."
       }),
       H.el("div", { class: "card__meta" }, [
         NB.cards.importanceBadge("must"),
-        H.el("span", { text: "अवश्य याद रखें: " + stats.must })
+        H.el("span", { text: "Must Remember: " + stats.must })
       ]),
       H.el("div", { class: "row-flex" }, [
         H.el(
@@ -45,11 +45,11 @@
               go("history");
             }
           },
-          [H.el("span", { class: "btn__label" }, [H.icon("book", 17), "अध्ययन शुरू करें"])]
+          [H.el("span", { class: "btn__label" }, [H.icon("book", 17), "Start Studying"])]
         ),
         H.el("span", {
           class: "text-sm text-subtle",
-          text: stats.reviewed + " तिथियाँ अब तक समीक्षित"
+          text: stats.reviewed + " dates reviewed so far"
         })
       ])
     ]);
@@ -67,28 +67,28 @@
     var hero = H.el("section", { class: "hero" }, [
       H.el("span", { class: "hero__eyebrow" }, [
         H.icon("cap", 14),
-        H.el("span", { text: "कक्षा 10 · सामाजिक विज्ञान · उत्तराखंड बोर्ड" })
+        H.el("span", { text: "Class 10 · Social Science · UBSE" })
       ]),
-      H.el("h1", { class: "hero__title", text: "नमस्ते! आज की पढ़ाई शुरू करें" }),
+      H.el("h1", { class: "hero__title", text: "Hello! Let's start studying today" }),
       H.el("p", {
         class: "hero__text",
         text:
-          "इतिहास की महत्वपूर्ण तिथियाँ याद करें, क्विज़ से अपनी तैयारी जाँचें और प्रगति देखें। रोज़ 15–20 मिनट की पढ़ाई भी बड़ा अंतर बनाती है।"
+          "Learn important history dates, test your preparation with quizzes, and track your progress. Even 15–20 minutes of study daily makes a big difference."
       }),
       H.el("div", { class: "hero__stats" }, [
-        heroStat(stats.total, "कुल तिथियाँ"),
-        heroStat(stats.must, "अवश्य याद रखें"),
-        heroStat(stats.reviewed, "समीक्षित"),
-        heroStat(stats.quiz.attempts, "क्विज़ प्रयास")
+        heroStat(stats.total, "Total Dates"),
+        heroStat(stats.must, "Must Remember"),
+        heroStat(stats.reviewed, "Reviewed"),
+        heroStat(stats.quiz.attempts, "Quiz Attempts")
       ])
     ]);
 
     var tiles = H.el("div", { class: "card-grid" }, [
       NB.ui.actionCard({
         icon: "quiz",
-        title: "क्विज़",
-        text: "तारीख → घटना और घटना → तारीख, दोनों मोड में 5 प्रश्न। तुरंत फ़ीडबैक और स्कोर।",
-        meta: stats.quiz.attempts ? "औसत स्कोर: " + stats.quiz.averagePercent + "%" : "अभी शुरू नहीं किया",
+        title: "Quiz",
+        text: "5 questions in both modes — Date → Event and Event → Date. Instant feedback and score.",
+        meta: stats.quiz.attempts ? "Average Score: " + stats.quiz.averagePercent + "%" : "Not started yet",
         onClick: function () {
           go("quiz");
         }
@@ -96,18 +96,18 @@
       NB.ui.actionCard({
         icon: "revision",
         accent: true,
-        title: "रिवीज़न",
-        text: "छोटे फ़्लैशकार्ड सत्र में अवश्य याद रखने वाली तिथियाँ दोहराएँ।",
-        meta: "5 मिनट का तेज़ दोहराव",
+        title: "Revision",
+        text: "Revise must-remember dates in quick flashcard sessions.",
+        meta: "5-minute quick revision",
         onClick: function () {
           go("revision");
         }
       }),
       NB.ui.actionCard({
         icon: "progress",
-        title: "प्रगति",
-        text: "कितनी तिथियाँ समीक्षित हुईं और क्विज़ में स्कोर कैसा रहा — सब एक जगह।",
-        meta: "आपकी तैयारी का हिसाब",
+        title: "Progress",
+        text: "How many dates you've reviewed and how you're scoring in quizzes — all in one place.",
+        meta: "Your preparation summary",
         onClick: function () {
           go("progress");
         }
@@ -115,37 +115,37 @@
     ]);
 
     var progressSection = H.el("section", { class: "card" }, [
-      NB.ui.sectionTitle("आपकी प्रगति", "progress"),
+      NB.ui.sectionTitle("Your Progress", "progress"),
       NB.ui.progressBar(
         stats.reviewed,
         stats.total,
-        "समीक्षित तिथियाँ",
+        "Dates Reviewed",
         stats.reviewed + " / " + stats.total
       ),
       H.el("p", {
         class: "text-sm text-subtle",
         text:
           stats.quiz.attempts > 0
-              ? "पिछला क्विज़ स्कोर: " + stats.quiz.last.score + " / " + stats.quiz.last.total
-              : "पहला क्विज़ देकर अपनी प्रगति दर्ज करें।"
+              ? "Last quiz score: " + stats.quiz.last.score + " / " + stats.quiz.last.total
+              : "Take your first quiz to start tracking progress."
       })
     ]);
 
     var coming = H.el("section", { class: "section" }, [
-      NB.ui.sectionTitle("आगे आने वाले मॉड्यूल", "sparkle"),
+      NB.ui.sectionTitle("Coming Soon", "sparkle"),
       H.el("p", {
         class: "section-sub",
-        text: "ये हिस्से अगले चरणों में जुड़ेंगे। अभी ये उपलब्ध नहीं हैं, इसलिए इन्हें बटन की तरह नहीं रखा गया।"
+        text: "These modules will be added in future updates. They are not available yet, so they are shown as info cards, not buttons."
       }),
       H.el("div", { class: "coming-grid" }, [
-        NB.ui.comingSoonCard("भूगोल", "संसाधन, कृषि, खनिज और निर्माण उद्योग के नोट्स व तिथियाँ।", "mapPin"),
-        NB.ui.comingSoonCard("नागरिक शास्त्र", "सत्ता के विभाजन, संघवाद और राजनीतिक दलों के प्रश्न।", "users"),
-        NB.ui.comingSoonCard("अर्थशास्त्र", "विकास, क्षेत्रक और मुद्रा-साख के सरल नोट्स।", "trend"),
-        NB.ui.comingSoonCard("दैनिक नोट्स", "हर दिन का छोटा पाठ और लक्ष्य।", "file"),
-        NB.ui.comingSoonCard("मानचित्र अभ्यास", "नक्शे भरने और पहचानने का अभ्यास।", "map"),
-        NB.ui.comingSoonCard("उत्तर लेखन", "परीक्षा में अंक दिलाने वाले उत्तर कैसे लिखें।", "pen"),
-        NB.ui.comingSoonCard("मॉक टेस्ट", "पूरे पाठ्यक्रम पर समयबद्ध अभ्यास।", "clipboard"),
-        NB.ui.comingSoonCard("90+ मिशन", "लक्ष्य आधारित योजना और रिवीज़न शेड्यूल।", "target")
+        NB.ui.comingSoonCard("Geography", "Notes and dates on resources, agriculture, minerals, and manufacturing industries.", "mapPin"),
+        NB.ui.comingSoonCard("Civics", "Questions on power sharing, federalism, and political parties.", "users"),
+        NB.ui.comingSoonCard("Economics", "Simple notes on development, sectors, and money-credit.", "trend"),
+        NB.ui.comingSoonCard("Daily Notes", "A short daily lesson and target.", "file"),
+        NB.ui.comingSoonCard("Map Practice", "Practice filling and identifying maps.", "map"),
+        NB.ui.comingSoonCard("Answer Writing", "How to write exam-scoring answers.", "pen"),
+        NB.ui.comingSoonCard("Mock Test", "Timed practice on the full syllabus.", "clipboard"),
+        NB.ui.comingSoonCard("90+ Mission", "Target-based planning and revision schedule.", "target")
       ])
     ]);
 
@@ -153,11 +153,11 @@
       H.el("div", { class: "page" }, [
         hero,
         H.el("section", { class: "section" }, [
-          NB.ui.sectionTitle("मुख्य अध्ययन मॉड्यूल", "book"),
+          NB.ui.sectionTitle("Main Study Modules", "book"),
           featureCard(stats)
         ]),
         H.el("section", { class: "section" }, [
-          NB.ui.sectionTitle("और क्या कर सकते हैं", "layers"),
+          NB.ui.sectionTitle("What Else You Can Do", "layers"),
           tiles
         ]),
         progressSection,

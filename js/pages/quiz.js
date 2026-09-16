@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    NotesByME — Quiz page
    Thin wrapper around the reusable engine in js/components/quiz-card.js.
    Exposes NB.pages.quiz
@@ -83,8 +83,8 @@
     if (!state.questions) {
       container.appendChild(
         NB.ui.emptyState(
-          "क्विज़ अभी शुरू नहीं हुआ",
-          "ऊपर से मोड चुनें — तारीख से घटना, या घटना से तारीख — और \"क्विज़ शुरू करें\" दबाएँ। हर प्रश्न के बाद सही उत्तर और संक्षिप्त व्याख्या भी दिखेगी।",
+          "Quiz अभी शुरू नहीं हुआ",
+          "ऊपर से Mode चुनें — Date से Event, या Event से Date — और \"Quiz Start\" दबाएँ। The correct answer and a short explanation will be shown after each question।",
           null,
           null,
           "quiz"
@@ -114,7 +114,7 @@
   function modeToggle() {
     var row = H.el(
       "div",
-      { class: "segmented segmented--block", role: "group", "aria-label": "क्विज़ मोड" },
+      { class: "segmented segmented--block", role: "group", "aria-label": "Quiz Mode" },
       modes.map(function (mode) {
         var active = state.mode === mode.id;
         return H.el("button", {
@@ -137,7 +137,7 @@
   }
 
   function chapterSelect() {
-    var options = [{ id: "all", number: "", title: "सभी अध्याय" }].concat(
+    var options = [{ id: "all", number: "", title: "All Chapter" }].concat(
       NB.data.history.chapters
     );
 
@@ -146,7 +146,7 @@
       {
         class: "select",
         id: "quiz-chapter",
-        "aria-label": "क्विज़ का अध्याय चुनें",
+        "aria-label": "Quiz का Chapter चुनें",
         onchange: function () {
           state.chapter = select.value;
           savePrefs();
@@ -157,7 +157,7 @@
         return H.el("option", {
           value: chapter.id,
           text: chapter.number
-            ? "अध्याय " + chapter.number + " · " + chapter.title
+            ? "Chapter " + chapter.number + " · " + chapter.title
             : chapter.title,
           selected: state.chapter === chapter.id ? true : null
         });
@@ -166,7 +166,7 @@
 
     refs.chapter = select;
     return H.el("div", { class: "field" }, [
-      H.el("label", { class: "field__label", for: "quiz-chapter", text: "अध्याय" }),
+      H.el("label", { class: "field__label", for: "quiz-chapter", text: "Chapter" }),
       select
     ]);
   }
@@ -186,19 +186,19 @@
 
   function render(root) {
     var setup = H.el("div", { class: "card" }, [
-      NB.ui.sectionTitle("क्विज़ सेटअप", "quiz"),
+      NB.ui.sectionTitle("Quiz सेटअप", "quiz"),
       H.el("p", {
         class: "card__text",
         text:
           NB.quiz.DEFAULT_LENGTH +
-          " प्रश्न · " +
+          " Questions · " +
           NB.quiz.OPTION_COUNT +
-          " विकल्प · हर उत्तर पर तुरंत फ़ीडबैक। मोड या अध्याय बदलते ही नया क्विज़ शुरू हो जाएगा।"
+          " Options · Instant feedback on every answer। Mode या Chapter बदलते ही नया Quiz शुरू हो जाएगा।"
       }),
       modeToggle(),
       chapterSelect(),
       H.el("button", { class: "btn btn--primary btn--lg", type: "button", onclick: start }, [
-        H.el("span", { class: "btn__label" }, [H.icon("arrowRight", 17), "क्विज़ शुरू करें"])
+        H.el("span", { class: "btn__label" }, [H.icon("arrowRight", 17), "Quiz Start"])
       ])
     ]);
 
@@ -207,12 +207,12 @@
     root.appendChild(
       H.el("div", { class: "page" }, [
         H.el("div", { class: "page-head" }, [
-          H.el("p", { class: "page-head__eyebrow", text: "अभ्यास · इतिहास" }),
-          H.el("h1", { class: "page-head__title", text: "क्विज़" }),
+          H.el("p", { class: "page-head__eyebrow", text: "Practice · History" }),
+          H.el("h1", { class: "page-head__title", text: "Quiz" }),
           H.el("p", {
             class: "page-head__sub",
             text:
-              "इतिहास की तिथियों पर आधारित अभ्यास। सही उत्तर चुनकर अपनी तैयारी जाँचें — स्कोर प्रगति पेज में अपने आप जुड़ जाएगा।"
+              "Practice based on history dates। सही उत्तर चुनकर अपनी तैयारी जाँचें — स्कोर Progress पेज में अपने आप जुड़ जाएगा।"
           })
         ]),
         setup,

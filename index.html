@@ -8,7 +8,7 @@
     <meta name="theme-color" content="#0a0d16" media="(prefers-color-scheme: dark)" />
     <meta
       name="description"
-      content="NotesByME — कक्षा 10 सामाजिक विज्ञान (उत्तराखंड बोर्ड) की तैयारी के लिए इतिहास की महत्वपूर्ण तिथियाँ, क्विज़, रिवीज़न और प्रगति।"
+      content="NotesByME — Class 10 Social Science (UBSE) preparation with important history dates, quizzes, revision, and progress tracking."
     />
     <title>NotesByME</title>
     <link rel="icon" type="image/svg+xml" href="assets/icons/favicon.svg" />
@@ -38,7 +38,7 @@
       <div style="max-width: 420px; margin: 20vh auto; padding: 24px; text-align: center; font-family: system-ui, sans-serif;">
         <h1 style="font-size: 20px;">NotesByME</h1>
         <p style="line-height: 1.7;">
-          इस वेबसाइट को चलाने के लिए JavaScript चाहिए। कृपया अपने ब्राउज़र में JavaScript चालू करें और पेज दोबारा खोलें।
+          This website needs JavaScript to run. Please enable JavaScript in your browser and reload the page.
         </p>
       </div>
     </noscript>
@@ -46,6 +46,7 @@
     <!-- Load order matters: helpers -> storage -> data -> components -> pages -> app -->
     <script src="js/utils/helpers.js"></script>
     <script src="js/utils/storage.js"></script>
+    <script src="js/utils/indexeddb.js"></script>
     <script src="js/data/history-dates.js"></script>
     <script src="js/components/pin-lock.js"></script>
     <script src="js/components/navigation.js"></script>
@@ -58,6 +59,9 @@
     <script src="js/pages/quiz.js"></script>
     <script src="js/pages/revision.js"></script>
     <script src="js/pages/progress.js"></script>
+    <script src="js/pages/notes.js"></script>
+    <script src="js/pages/doubts.js"></script>
+    <script src="js/pages/settings.js"></script>
     <script src="js/app.js"></script>
   </body>
 </html>

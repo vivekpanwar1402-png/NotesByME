@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    NotesByME — Progress bits & shared small UI atoms
    Reusable, data-free builders used by the pages.
    Exposes NB.ui
@@ -106,7 +106,7 @@
     return H.el("div", { class: "stack" }, [
       H.el("div", { class: "progress progress--thin" }, [
         H.el("div", { class: "progress__meta" }, [
-          H.el("span", { text: "अध्याय " + chapter.number + " · " + chapter.title }),
+          H.el("span", { text: "Chapter " + chapter.number + " · " + chapter.title }),
           H.el("b", { text: reviewedCount + " / " + total })
         ]),
         H.el("div", { class: "progress__track" }, [

@@ -1770,6 +1770,84 @@
   pointer-events: none;
 }
 
+/* ------------------------------------------------------- tags --------- */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  border-radius: var(--r-full);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-medium);
+  background: var(--primary-soft);
+  color: var(--primary);
+  border: 1px solid var(--border);
+}
+
+.tag--muted {
+  background: var(--surface-3);
+  color: var(--text-muted);
+}
+
+.tag--success {
+  background: var(--success-soft);
+  color: var(--success);
+}
+
+.tag--warning {
+  background: var(--important-soft);
+  color: var(--important);
+}
+
+/* ------------------------------------------------------- textarea --- */
+.textarea {
+  resize: vertical;
+  min-height: 100px;
+  max-height: 400px;
+}
+
+/* ------------------------------------------------------- note cards - */
+.note-card .card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.card__body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+/* ------------------------------------------------------- wallpaper --- */
+html {
+  background: var(--bg);
+}
+
+body {
+  background: var(--bg);
+}
+
+/* subtle wallpaper pattern */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse at 20% 50%, var(--primary-soft) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, var(--accent-soft) 0%, transparent 40%),
+    var(--bg);
+  opacity: 0.6;
+}
+
+[data-theme="dark"] body::before {
+  background:
+    radial-gradient(ellipse at 20% 50%, rgba(111, 108, 247, 0.08) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 20%, rgba(45, 212, 191, 0.06) 0%, transparent 40%),
+    var(--bg);
+  opacity: 0.8;
+}
+
 @keyframes lock-out {
   to {
     opacity: 0;

@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    NotesByME — Progress page
    Reads everything through NB.storage (no direct localStorage use here).
    Exposes NB.pages.progress
@@ -38,7 +38,7 @@
     });
 
     return H.el("section", { class: "section" }, [
-      NB.ui.sectionTitle("अध्याय के अनुसार तैयारी", "book"),
+      NB.ui.sectionTitle("Preparation by Chapter", "book"),
       H.el("div", { class: "card card--soft stack" }, rows)
     ]);
   }
@@ -52,7 +52,7 @@
       var chapterText =
         entry.chapter && entry.chapter !== "all"
           ? NB.cards.chapterTitle(entry.chapter)
-          : "सभी अध्याय";
+          : "All Chapter";
       return H.el("div", { class: "row" }, [
         H.el("div", { class: "row__main" }, [
           H.el("span", { class: "row__title", text: mode }),
@@ -63,17 +63,17 @@
     });
 
     return H.el("section", { class: "section" }, [
-      NB.ui.sectionTitle("क्विज़ प्रदर्शन", "quiz"),
+      NB.ui.sectionTitle("Quiz Performance", "quiz"),
       H.el("div", { class: "stat-grid" }, [
-        NB.ui.statTile("कुल प्रयास", stats.attempts),
-        NB.ui.statTile("औसत स्कोर", stats.averagePercent, "%"),
-        NB.ui.statTile("सर्वोत्तम स्कोर", stats.bestPercent, "%")
+        NB.ui.statTile("Total Attempts", stats.attempts),
+        NB.ui.statTile("Average Score", stats.averagePercent, "%"),
+        NB.ui.statTile("Best Score", stats.bestPercent, "%")
       ]),
       rows.length
         ? H.el("div", { class: "card card--soft" }, [H.el("div", { class: "list" }, rows)])
         : H.el("p", {
             class: "text-sm text-subtle",
-            text: "अभी कोई क्विज़ दर्ज नहीं है। क्विज़ देकर अपना स्कोर जोड़ें।"
+            text: "No quiz results yet. Take a quiz to add your score."
           })
     ]);
   }
@@ -89,7 +89,7 @@
     var page = H.el("div", { class: "page" }, [
       H.el("div", { class: "page-head" }, [
         H.el("p", { class: "page-head__eyebrow", text: "आपका हिसाब" }),
-        H.el("h1", { class: "page-head__title", text: "प्रगति" }),
+        H.el("h1", { class: "page-head__title", text: "Progress" }),
         H.el("p", {
           class: "page-head__sub",
           text:
@@ -104,9 +104,9 @@
           "div",
           { class: "section" },
           NB.ui.emptyState(
-            "अभी कोई प्रगति दर्ज नहीं है",
-            "इतिहास की तिथियाँ पढ़ें, विवरण में \"समीक्षित\" दबाएँ या क्विज़ दें — फिर यहाँ आपका हिसाब दिखने लगेगा।",
-            "इतिहास शुरू करें",
+            "No progress recorded yet",
+            "Read history dates, tap \"Reviewed\" in the details, or take a quiz — then your stats will appear here.",
+            "Start History",
             function () {
               go("history");
             },
@@ -120,7 +120,7 @@
 
     page.appendChild(
       H.el("section", { class: "section" }, [
-        NB.ui.sectionTitle("समीक्षित तिथियाँ", "checkCircle"),
+        NB.ui.sectionTitle("Dates Reviewed", "checkCircle"),
         H.el(
           "div",
           { class: "card" },
@@ -131,16 +131,16 @@
               NB.ui.progressBar(
                 reviewed,
                 dates.length,
-                "कुल तिथियों में से समीक्षित",
+                "Dates Reviewed out of Total",
                 reviewed + " / " + dates.length
               ),
               H.el("div", { class: "stat-grid" }, [
-                NB.ui.statTile("कुल तिथियाँ", dates.length),
-                NB.ui.statTile("समीक्षित", reviewed),
-                NB.ui.statTile("बाकी", dates.length - reviewed)
+                NB.ui.statTile("Total Dates", dates.length),
+                NB.ui.statTile("Reviewed", reviewed),
+                NB.ui.statTile("Remaining", dates.length - reviewed)
               ])
             ]),
-            NB.ui.ring(H.percent(reviewed, dates.length), "समीक्षित")
+            NB.ui.ring(H.percent(reviewed, dates.length), "Reviewed")
           )
         )
       ])
@@ -151,10 +151,10 @@
 
     page.appendChild(
       H.el("section", { class: "section" }, [
-        NB.ui.sectionTitle("प्रगति रीसेट करें", "alert"),
+        NB.ui.sectionTitle("Reset Progress", "alert"),
         H.el("p", {
           class: "text-sm text-subtle",
-          text: "समीक्षित तिथियाँ और सभी क्विज़ स्कोर मिट जाएँगे। यह काम वापस नहीं हो सकता।"
+          text: "Dates Reviewed और All Quiz स्कोर मिट जाएँगे। यह काम वापस नहीं हो सकता।"
         }),
         H.el("div", { class: "row-flex" }, [
           H.el(
@@ -163,14 +163,14 @@
               class: "btn btn--danger",
               type: "button",
               onclick: function () {
-                var sure = window.confirm("पक्का? सभी समीक्षित तिथियाँ और क्विज़ स्कोर मिट जाएँगे।");
+                var sure = window.confirm("पक्का? All Dates Reviewed और Quiz स्कोर मिट जाएँगे।");
                 if (!sure) return;
                 NB.storage.resetAll();
                 H.clear(root);
                 render(root);
               }
             },
-            [H.el("span", { class: "btn__label" }, [H.icon("delete", 16), "प्रगति रीसेट करें"])]
+            [H.el("span", { class: "btn__label" }, [H.icon("delete", 16), "Reset Progress"])]
           )
         ])
       ])

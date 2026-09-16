@@ -23,7 +23,10 @@
       history: NB.pages.history,
       quiz: NB.pages.quiz,
       revision: NB.pages.revision,
-      progress: NB.pages.progress
+      progress: NB.pages.progress,
+      notes: NB.pages.notes,
+      doubts: NB.pages.doubts,
+      settings: NB.pages.settings
     };
   }
 
@@ -38,17 +41,17 @@
     main.appendChild(
       H.el("div", { class: "empty" }, [
         H.el("span", { class: "empty__icon" }, [H.icon("alert", 22)]),
-        H.el("h3", { class: "empty__title", text: "यह हिस्सा खुल नहीं पाया" }),
+        H.el("h3", { class: "empty__title", text: "This section could not be loaded" }),
         H.el("p", {
           class: "empty__text",
-          text: "कृपया पेज दोबारा खोलें। अगर समस्या बनी रहे तो होम पर जाएँ।"
+          text: "Please reload the page. If the problem persists, go back to Home."
         }),
         H.el(
           "button",
           {
             class: "btn btn--secondary",
             type: "button",
-            text: "होम पर जाएँ",
+            text: "Go to Home",
             onclick: function () {
               window.location.hash = "#/home";
             }
@@ -127,6 +130,22 @@
     }
 
     window.addEventListener("hashchange", onHashChange);
+
+    // Lock on visibility change (tab backgrounded, hidden, etc.)
+    document.addEventListener("visibilitychange", function () {
+      if (document.hidden && NB.gate.isUnlocked()) {
+        NB.gate.lock();
+        showGate();
+      }
+    });
+
+    // Lock on blur (window loses focus)
+    window.addEventListener("blur", function () {
+      if (NB.gate.isUnlocked()) {
+        NB.gate.lock();
+        showGate();
+      }
+    });
   }
 
   NB.app = {

@@ -12,11 +12,14 @@
   var NB = (window.NB = window.NB || {});
 
   var ROUTES = [
-    { id: "home", hash: "#/home", label: "होम", icon: "home" },
-    { id: "history", hash: "#/history", label: "इतिहास", icon: "book" },
-    { id: "quiz", hash: "#/quiz", label: "क्विज़", icon: "quiz" },
-    { id: "revision", hash: "#/revision", label: "रिवीज़न", icon: "revision" },
-    { id: "progress", hash: "#/progress", label: "प्रगति", icon: "progress" }
+    { id: "home", hash: "#/home", label: "Home", icon: "home" },
+    { id: "history", hash: "#/history", label: "History", icon: "book" },
+    { id: "quiz", hash: "#/quiz", label: "Quiz", icon: "quiz" },
+    { id: "revision", hash: "#/revision", label: "Revision", icon: "revision" },
+    { id: "progress", hash: "#/progress", label: "Progress", icon: "progress" },
+    { id: "notes", hash: "#/notes", label: "My Notes", icon: "note" },
+    { id: "doubts", hash: "#/doubts", label: "Doubt Desk", icon: "help" },
+    { id: "settings", hash: "#/settings", label: "Settings", icon: "gear" }
   ];
 
   var themeButtons = [];
@@ -52,8 +55,8 @@
       if (!button || !button.parentNode) return;
       helpers.clear(button);
       button.appendChild(helpers.icon(isDark ? "sun" : "moon", 18));
-      button.setAttribute("aria-label", isDark ? "लाइट मोड चालू करें" : "डार्क मोड चालू करें");
-      button.setAttribute("title", isDark ? "लाइट मोड" : "डार्क मोड");
+      button.setAttribute("aria-label", isDark ? "Turn on Light Mode" : "Turn on Dark Mode");
+      button.setAttribute("title", isDark ? "Light Mode" : "Dark Mode");
       button.setAttribute("aria-pressed", isDark ? "true" : "false");
     });
   }
@@ -91,13 +94,13 @@
       helpers.el("span", { class: "brand__mark", text: "N" }),
       helpers.el("span", { class: "brand__text" }, [
         helpers.el("span", { class: "brand__name", text: "NotesByME" }),
-        helpers.el("span", { class: "brand__tag", text: "कक्षा 10 · सामाजिक विज्ञान" })
+        helpers.el("span", { class: "brand__tag", text: "Class 10 · Social Science" })
       ])
     ]);
 
     var nav = helpers.el(
       "nav",
-      { class: "nav", "aria-label": "मुख्य मेन्यू" },
+      { class: "nav", "aria-label": "Main Menu" },
       ROUTES.map(function (route) {
         return navLink(route, "nav__link", activeId);
       })
@@ -108,8 +111,8 @@
       {
         class: "icon-btn",
         type: "button",
-        "aria-label": "लॉक करके PIN स्क्रीन पर जाएँ",
-        title: "लॉक करें",
+        "aria-label": "Lock and go to PIN screen",
+        title: "Lock",
         onclick: function () {
           NB.gate.lock();
           NB.app.showGate();
@@ -133,7 +136,7 @@
   function renderBottomNav(activeId) {
     return NB.helpers.el(
       "nav",
-      { class: "bottom-nav", "aria-label": "मुख्य मेन्यू" },
+      { class: "bottom-nav", "aria-label": "Main Menu" },
       ROUTES.map(function (route) {
         return navLink(route, "bottom-nav__item", activeId);
       })

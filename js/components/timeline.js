@@ -1,4 +1,4 @@
-/* ==========================================================================
+﻿/* ==========================================================================
    NotesByME — Timeline view
    Renders the SAME dataset used by the cards, grouped by year.
    Exposes NB.timeline
@@ -17,7 +17,7 @@
       {
         class: "timeline__item timeline__item--" + item.importance,
         type: "button",
-        "aria-label": item.date + " — " + item.event + ". विवरण देखें",
+        "aria-label": item.date + " — " + item.event + ". View details",
         onclick: function () {
           if (typeof settings.onOpen === "function") settings.onOpen(item);
         }
@@ -30,7 +30,7 @@
         H.el("p", { class: "timeline__event", text: item.event }),
         H.el("p", { class: "timeline__meta" }, [
           H.icon("book", 13),
-          H.el("span", { text: "अध्याय " + NB.cards.chapterNumber(item.chapter) })
+          H.el("span", { text: "Chapter " + NB.cards.chapterNumber(item.chapter) })
         ])
       ]
     );
