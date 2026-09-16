@@ -49,6 +49,30 @@
   --danger-soft: #fdeceb;
   --danger-border: #f6c9c5;
 
+  /* ---- Glassmorphism system (premium frosted glass over wallpaper) --- */
+  --glass-surface: rgba(255, 255, 255, 0.22);
+  --glass-surface-strong: rgba(255, 255, 255, 0.34);
+  --glass-border: rgba(255, 255, 255, 0.38);
+  --glass-border-strong: rgba(255, 255, 255, 0.6);
+  --glass-shadow: 0 8px 32px rgba(10, 14, 35, 0.28), inset 0 1px 0 rgba(255, 255, 255, 0.35);
+  --glass-shadow-hover: 0 14px 44px rgba(10, 14, 35, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  --glass-blur: blur(22px) saturate(160%);
+  --glass-blur-strong: blur(30px) saturate(180%);
+
+  /* ---- Translucent accent glows (adaptive to wallpaper) ---------------- */
+  --glow-blue: rgba(59, 130, 246, 0.55);
+  --glow-cyan: rgba(34, 211, 238, 0.5);
+  --glow-purple: rgba(168, 85, 247, 0.55);
+  --glow-pink: rgba(236, 72, 153, 0.5);
+  --glow-green: rgba(52, 211, 153, 0.45);
+
+  /* ---- Replaceable wallpaper architecture -------------------------------
+     To change the wallpaper later, override --wallpaper-image only
+     (e.g. in Settings, a theme file, or inline style). The overlay and
+     fallback stay untouched. */
+  --wallpaper-image: url("../assets/images/wallpaper.svg");
+  --wallpaper-fallback: #0b1030;
+
   /* ---- Elevation ---------------------------------------------------- */
   --shadow-xs: 0 1px 2px rgba(18, 22, 40, 0.06);
   --shadow-sm: 0 1px 2px rgba(18, 22, 40, 0.06), 0 2px 6px -2px rgba(18, 22, 40, 0.1);
@@ -155,6 +179,16 @@
   --danger: #ff8a80;
   --danger-soft: rgba(255, 138, 128, 0.14);
   --danger-border: rgba(255, 138, 128, 0.34);
+
+  /* ---- Glassmorphism system (dark / wallpaper mode) ------------------- */
+  --glass-surface: rgba(255, 255, 255, 0.14);
+  --glass-surface-strong: rgba(255, 255, 255, 0.22);
+  --glass-border: rgba(255, 255, 255, 0.28);
+  --glass-border-strong: rgba(255, 255, 255, 0.45);
+  --glass-shadow: 0 8px 32px rgba(0, 0, 0, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  --glass-shadow-hover: 0 14px 44px rgba(0, 0, 0, 0.52), inset 0 1px 0 rgba(255, 255, 255, 0.32);
+  --glass-blur: blur(22px) saturate(160%);
+  --glass-blur-strong: blur(30px) saturate(180%);
 
   --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
   --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4), 0 2px 8px -2px rgba(0, 0, 0, 0.5);

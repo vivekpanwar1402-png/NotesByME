@@ -1,0 +1,17 @@
+/* Premium frosted-glass home edition (loads after global.css). */
+.home-glass{position:relative;display:flex;align-items:center;gap:16px;width:100%;padding:20px;border-radius:22px;text-align:left;overflow:hidden;color:#fff;background:linear-gradient(135deg,rgba(255,255,255,.24),rgba(255,255,255,.10));background-color:rgba(18,24,48,.34);backdrop-filter:blur(24px) saturate(170%);-webkit-backdrop-filter:blur(24px) saturate(170%);border:1px solid rgba(255,255,255,.32);box-shadow:0 12px 40px rgba(2,6,20,.42),inset 0 1px 0 rgba(255,255,255,.42);transition:transform .19s cubic-bezier(.2,.7,.3,1),box-shadow .19s cubic-bezier(.2,.7,.3,1)}
+button.home-glass{font:inherit;cursor:pointer}
+.home-glass::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:.5;background:radial-gradient(120% 90% at 0% 0%,rgba(255,255,255,.22),transparent 55%)}
+.home-glass::after{content:"";position:absolute;inset:auto -20% -55% -20%;height:90%;pointer-events:none;opacity:.55;filter:blur(28px);background:radial-gradient(closest-side,var(--glow-blue),transparent 70%)}
+.home-glass[data-accent="purple"]::after{background:radial-gradient(closest-side,var(--glow-purple),transparent 70%)}
+.home-glass[data-accent="cyan"]::after{background:radial-gradient(closest-side,var(--glow-cyan),transparent 70%)}
+.home-glass[data-accent="pink"]::after{background:radial-gradient(closest-side,var(--glow-pink),transparent 70%)}
+.home-glass[data-accent="green"]::after{background:radial-gradient(closest-side,var(--glow-green),transparent 70%)}
+.home-glass:hover{transform:translateY(-2px)}
+.home-glass:active{transform:scale(.99)}
+.home-glass__body{flex:1 1 auto;min-width:0;display:flex;flex-direction:column;gap:4px}
+.home-glass__eyebrow{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.72)}
+.home-glass__title{font-size:1.18rem;font-weight:700;letter-spacing:-.01em;color:#fff;text-shadow:0 1px 12px rgba(0,0,0,.35)}
+.home-glass__title--sm{font-size:1.02rem;line-height:1.4}
+.home-glass__sub{font-size:14px;line-height:1.55;color:rgba(255,255,255,.76)}
+.home-glass__chevron{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:50%;color:rgba(255,255,255,.9);background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.28)}

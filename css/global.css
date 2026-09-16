@@ -1,5 +1,6 @@
 /* ==========================================================================
    NotesByME — Global layout, typography & shell
+   Premium wallpaper + frosted-glass home edition.
    ========================================================================== */
 
 /* ---------------------------------------------------------------- a11y -- */
@@ -74,16 +75,86 @@ strong {
   color: var(--text);
 }
 
-/* ---------------------------------------------------------------- shell -- */
+/* ------------------------------------------------------------ wallpaper --- */
+/* Replaceable wallpaper architecture:
+   --wallpaper-image  -> swap this one variable to change the wallpaper
+   --wallpaper-overlay -> readability tint, independent of the image */
+.wallpaper {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  background-color: var(--wallpaper-fallback, #0b1030);
+  background-image: var(--wallpaper-image);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+.wallpaper::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: var(--wallpaper-overlay);
+  pointer-events: none;
+}
+
+/* Premium night-aurora readability overlay (light + dark share wallpaper). */
+:root {
+  --wallpaper-overlay: linear-gradient(
+    180deg,
+    rgba(5, 8, 22, 0.52) 0%,
+    rgba(5, 8, 22, 0.44) 38%,
+    rgba(5, 8, 22, 0.58) 100%
+  );
+}
+
+[data-theme="dark"] {
+  --wallpaper-overlay: linear-gradient(
+    180deg,
+    rgba(3, 5, 16, 0.62) 0%,
+    rgba(3, 5, 16, 0.55) 38%,
+    rgba(3, 5, 16, 0.7) 100%
+  );
+}
+
+/* Wallpaper-frosted text: white/light over wallpaper in both themes. */
+:root,
+[data-theme="dark"] {
+  --text: #f2f5ff;
+  --text-muted: rgba(235, 240, 255, 0.78);
+  --text-subtle: rgba(235, 240, 255, 0.6);
+  --border: rgba(255, 255, 255, 0.22);
+}
+
+/* Generic .card base becomes frosted glass (wallpaper shows through). */
+.card {
+  background: var(--glass-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--glass-shadow);
+}
+
+/* ------------------------------------------------------------- shell ------- */
+.app-shell {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Transparent glass-friendly header: no solid box over the wallpaper. */
 .app-header {
   position: sticky;
   top: 0;
   z-index: 90;
-  background: var(--surface); /* fallback for browsers without color-mix() */
-  background: color-mix(in srgb, var(--surface) 88%, transparent);
-  backdrop-filter: saturate(180%) blur(14px);
-  -webkit-backdrop-filter: saturate(180%) blur(14px);
-  border-bottom: 1px solid var(--border);
+  background: linear-gradient(180deg, rgba(5, 8, 22, 0.42), rgba(5, 8, 22, 0));
+  backdrop-filter: blur(14px) saturate(150%);
+  -webkit-backdrop-filter: blur(14px) saturate(150%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.14);
 }
 
 .app-header__inner {
@@ -110,13 +181,14 @@ strong {
   place-items: center;
   width: 34px;
   height: 34px;
-  border-radius: 10px;
-  background: linear-gradient(140deg, var(--primary), var(--primary-strong));
-  color: var(--primary-contrast);
+  border-radius: 12px;
+  background: linear-gradient(140deg, #38bdf8, #818cf8 55%, #e879f9);
+  color: #fff;
   font-size: 15px;
   font-weight: var(--fw-bold);
   letter-spacing: -0.02em;
-  box-shadow: var(--shadow-sm);
+  box-shadow: 0 6px 18px rgba(56, 189, 248, 0.45), inset 0 1px 0 rgba(255, 255, 255, 0.5);
+  border: 1px solid rgba(255, 255, 255, 0.45);
 }
 
 .brand__text {
@@ -149,6 +221,8 @@ strong {
 
 /* ------------------------------------------------------------- main area -- */
 .app-main {
+  flex: 1 1 auto;
+  flex: 1 1 auto;
   display: block;
   width: 100%;
   max-width: var(--container);
@@ -308,4 +382,466 @@ strong {
   :focus:not(:focus-visible) {
     outline: none;
   }
+}
+
+/* =========================================================== home premium */
+.home-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  max-width: 520px;
+  margin-inline: auto;
+  width: 100%;
+}
+
+/* Invisible flow divider: premium air, not a line. */
+.card-stack-divider {
+  height: var(--sp-1);
+  opacity: 0;
+}
+
+/* Transparent hero header (no solid container). */
+.home-hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-4);
+  padding: var(--sp-2) var(--sp-1) 0;
+}
+
+.home-hero__title {
+  font-size: clamp(1.9rem, 1.5rem + 3vw, 2.5rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #fff;
+  text-shadow: 0 2px 18px rgba(0, 0, 0, 0.45);
+  line-height: 1.05;
+}
+
+.home-hero__sub {
+  font-size: var(--fs-sm);
+  color: rgba(255, 255, 255, 0.72);
+  font-weight: var(--fw-medium);
+  margin-top: 4px;
+}
+
+.home-hero__search {
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  backdrop-filter: blur(18px) saturate(160%);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.4);
+  transition: transform var(--t-fast) var(--ease), background var(--t-fast) var(--ease);
+}
+
+.home-hero__search:hover { background: rgba(255, 255, 255, 0.28); transform: translateY(-1px); }
+.home-hero__search:active { transform: scale(0.96); }
+
+/* -------------------------------------------------- today card styles --- */
+.home-today-card {
+  padding: var(--sp-6);
+  position: relative;
+  overflow: hidden;
+}
+
+.home-today-card::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--primary), var(--accent));
+  opacity: 0.9;
+}
+
+.home-today-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--sp-4);
+}
+
+.home-today-card__label {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-xs);
+  font-weight: var(--fw-semibold);
+  color: var(--primary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  padding: var(--sp-1) var(--sp-3);
+  background: var(--primary-soft);
+  border-radius: var(--r-full);
+}
+
+.home-today-card__day {
+  font-size: var(--fs-sm);
+  color: var(--text-subtle);
+  font-weight: var(--fw-medium);
+}
+
+.home-today-card__date-time {
+  margin-bottom: var(--sp-4);
+}
+
+.home-today-card__date {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  color: var(--text);
+  margin-bottom: var(--sp-1);
+  letter-spacing: -0.01em;
+}
+
+.home-today-card__time {
+  font-family: var(--font-mono);
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  color: var(--primary);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.home-today-card__motivation {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: var(--sp-5);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--glass-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: var(--r-md);
+  border: 1px solid var(--glass-border);
+}
+
+.home-today-card__quick-stats {
+  display: flex;
+  gap: var(--sp-4);
+}
+
+.home-today-card__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  padding: var(--sp-3);
+  background: var(--glass-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-md);
+  text-align: center;
+}
+
+.home-today-card__stat-value {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.home-today-card__stat-label {
+  font-size: var(--fs-xs);
+  color: var(--text-subtle);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* -------------------------------------------- action card styles ------- */
+.home-action-card {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-5);
+  text-align: left;
+  width: 100%;
+  cursor: pointer;
+}
+
+.home-action-card__icon {
+  display: grid;
+  place-items: center;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--r-md);
+  background: var(--primary-soft);
+  color: var(--primary);
+  flex-shrink: 0;
+}
+
+.home-action-card__content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  flex: 1;
+  min-width: 0;
+}
+
+.home-action-card__title {
+  display: block;
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--text);
+  margin-bottom: var(--sp-1);
+}
+
+.home-action-card__text {
+  display: block;
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  line-height: var(--lh-relaxed);
+  margin-bottom: 0;
+}
+
+.home-action-card__arrow {
+  color: var(--text-subtle);
+  transition: transform var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+
+.home-action-card:hover .home-action-card__arrow {
+  transform: translateX(4px);
+  color: var(--primary);
+}
+
+/* ------------------------------------------- continue studying card --- */
+.home-continue-card {
+  padding: var(--sp-5);
+}
+
+.home-continue-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+
+.home-continue-card__icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-md);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.home-continue-card__title {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--text);
+}
+
+.home-continue-card__content {
+  margin-bottom: var(--sp-4);
+}
+
+.home-continue-card__text {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  line-height: var(--lh-relaxed);
+  margin-bottom: var(--sp-3);
+}
+
+.home-continue-card__progress {
+  display: flex;
+  gap: var(--sp-4);
+}
+
+.home-continue-card__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+}
+
+.home-continue-card__stat-value {
+  font-size: var(--fs-lg);
+  font-weight: var(--fw-bold);
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.home-continue-card__stat-label {
+  font-size: var(--fs-xs);
+  color: var(--text-subtle);
+}
+
+.home-continue-card__actions {
+  display: flex;
+  gap: var(--sp-2);
+  flex-wrap: wrap;
+}
+
+/* --------------------------------------------- quick actions section -- */
+.home-quick-actions {
+  padding: 0;
+}
+
+.home-section-title {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--text);
+  margin-bottom: var(--sp-3);
+  padding-bottom: var(--sp-2);
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.home-quick-actions__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: var(--sp-3);
+}
+
+.home-quick-action {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-4);
+  background: var(--glass-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-md);
+  box-shadow: var(--glass-shadow);
+  cursor: pointer;
+  transition: all var(--t-base) var(--ease);
+  text-align: left;
+  width: 100%;
+}
+
+.home-quick-action:hover {
+  background: var(--glass-surface-strong);
+  box-shadow: var(--glass-shadow-hover);
+  transform: translateY(-2px);
+}
+
+.home-quick-action__icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-md);
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.home-quick-action__content {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.home-quick-action__title {
+  display: block;
+  font-size: var(--fs-sm);
+  font-weight: var(--fw-semibold);
+  color: var(--text);
+  margin-bottom: 2px;
+}
+
+.home-quick-action__desc {
+  display: block;
+  font-size: var(--fs-xs);
+  color: var(--text-subtle);
+  line-height: var(--lh-normal);
+}
+
+.home-quick-action__arrow {
+  color: var(--text-subtle);
+  transition: transform var(--t-fast) var(--ease), color var(--t-fast) var(--ease);
+}
+
+.home-quick-action:hover .home-quick-action__arrow {
+  transform: translateX(3px);
+  color: var(--primary);
+}
+
+/* ---------------------------------------------- motivational recap card - */
+.home-recap-card {
+  padding: var(--sp-5);
+}
+
+.home-recap-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-4);
+}
+
+.home-recap-card__icon {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border-radius: var(--r-md);
+  background: var(--primary-soft);
+  color: var(--primary);
+}
+
+.home-recap-card__title {
+  font-size: var(--fs-md);
+  font-weight: var(--fw-semibold);
+  color: var(--text);
+}
+
+.home-recap-card__content {
+  margin-bottom: var(--sp-4);
+}
+
+.home-recap-card__stats {
+  display: flex;
+  gap: var(--sp-4);
+  margin-bottom: var(--sp-3);
+}
+
+.home-recap-card__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  padding: var(--sp-3);
+  background: var(--glass-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+  border-radius: var(--r-md);
+  text-align: center;
+}
+
+.home-recap-card__stat-value {
+  font-size: var(--fs-xl);
+  font-weight: var(--fw-bold);
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.home-recap-card__stat-label {
+  font-size: var(--fs-xs);
+  color: var(--text-subtle);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.home-recap-card__message {
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  font-style: italic;
+  text-align: center;
+  padding: var(--sp-3);
+  background: var(--glass-surface);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: var(--r-md);
+  border: 1px solid var(--glass-border);
 }

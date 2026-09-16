@@ -61,6 +61,8 @@
         ])
       ]);
     })));
+  }
+
   function openEditor(doubt) {
     var q = doubt ? doubt.question : "";
     var s = doubt ? doubt.subject : "History";
@@ -172,4 +174,3 @@
   NB.pages = NB.pages || {};
   NB.pages.doubts = { render: render };
 })();
-  }

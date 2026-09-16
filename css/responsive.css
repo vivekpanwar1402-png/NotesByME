@@ -48,6 +48,23 @@
   .card--feature {
     padding: var(--sp-4);
   }
+
+  .card {
+    padding: var(--sp-4);
+  }
+
+  .flashcard {
+    padding: var(--sp-4);
+    min-height: 280px;
+  }
+
+  .quiz-shell {
+    padding: var(--sp-4);
+  }
+
+  .lock__card {
+    padding: var(--sp-5) var(--sp-4) var(--sp-4);
+  }
 }
 
 /* ------------------------------------------------- large phones (560) --- */
@@ -74,6 +91,19 @@
 
   .timeline {
     padding-left: 34px;
+  }
+
+  .card {
+    padding: var(--sp-5);
+  }
+
+  .flashcard {
+    padding: var(--sp-6) var(--sp-7);
+    min-height: 330px;
+  }
+
+  .quiz-shell {
+    padding: var(--sp-5);
   }
 }
 
@@ -109,7 +139,7 @@
 
   .modal__panel {
     border-radius: var(--r-xl);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid var(--glass-border);
     max-height: 86vh;
   }
 
@@ -179,6 +209,21 @@
   .bottom-pad {
     padding-bottom: 0;
   }
+
+  .card {
+    padding: var(--sp-6);
+  }
+
+  .quiz-shell {
+    padding: var(--sp-7);
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .flashcard {
+    max-width: 560px;
+    margin: 0 auto;
+  }
 }
 
 /* ------------------------------------------------------- desktops (1200) */
@@ -186,12 +231,25 @@
   .card-grid--dates {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+
+  .card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 /* ------------------------------------------- landscape / short screens --- */
 @media (max-height: 720px) and (max-width: 899px) {
   .lock {
     align-items: flex-start;
+  }
+
+  .flashcard {
+    min-height: 260px;
+    padding: var(--sp-4);
+  }
+
+  .quiz-shell {
+    padding: var(--sp-4);
   }
 }
 
@@ -215,5 +273,18 @@
     box-shadow: none;
     border-color: #cccccc;
     break-inside: avoid;
+    background: #ffffff;
+  }
+
+  .flashcard,
+  .quiz-shell,
+  .lock__card {
+    box-shadow: none;
+    border-color: #cccccc;
+    background: #ffffff;
+  }
+
+  .wallpaper {
+    display: none;
   }
 }

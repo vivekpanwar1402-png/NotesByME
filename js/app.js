@@ -84,6 +84,31 @@
   function renderShell(routeId) {
     H.clear(appEl);
     currentRouteId = routeId;
+    /* Full-screen wallpaper layer (replaceable via --wallpaper-image). */
+    var wallpaper = document.querySelector(".wallpaper");
+    if (!wallpaper) {
+      wallpaper = H.el("div", { class: "wallpaper", "aria-hidden": "true" });
+      document.body.insertBefore(wallpaper, document.body.firstChild);
+    }
+    /* Expose a tiny wallpaper API so the image can be changed later. */
+    NB.wallpaper = NB.wallpaper || {
+      set: function (url) {
+        var value = url ? "url(\"" + url + "\")" : null;
+        if (value) {
+          document.documentElement.style.setProperty("--wallpaper-image", value);
+          try { localStorage.setItem("nbme.wallpaper", url); } catch (e) {}
+        } else {
+          document.documentElement.style.removeProperty("--wallpaper-image");
+          try { localStorage.removeItem("nbme.wallpaper"); } catch (e) {}
+        }
+      }
+    };
+    try {
+      var savedWallpaper = localStorage.getItem("nbme.wallpaper");
+      if (savedWallpaper) {
+        document.documentElement.style.setProperty("--wallpaper-image", "url(\"" + savedWallpaper + "\")");
+      }
+    } catch (e) {}
     appEl.appendChild(NB.nav.renderHeader(routeId));
     mainEl = H.el("main", { class: "app-main", id: "main", tabindex: "-1" });
     appEl.appendChild(mainEl);

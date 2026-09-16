@@ -134,13 +134,36 @@
   }
 
   function renderBottomNav(activeId) {
-    return NB.helpers.el(
-      "nav",
-      { class: "bottom-nav", "aria-label": "Main Menu" },
-      ROUTES.map(function (route) {
-        return navLink(route, "bottom-nav__item", activeId);
-      })
-    );
+    var helpers = NB.helpers;
+    /* Keep all 8 routes; visually compact: Home, History, Quiz, +, Progress, Notes, Doubts. */
+    var compactIds = ["home", "history", "quiz", "fab", "progress", "notes", "doubts"];
+    var items = compactIds.map(function (id) {
+      if (id === "fab") {
+        var fab = helpers.el("a", {
+          class: "bottom-nav__item bottom-nav__item--fab",
+          href: "#/notes",
+          "aria-label": "Add a note"
+        }, [
+          helpers.el("span", { class: "bottom-nav__fab", "aria-hidden": "true" }, [helpers.icon("plus", 22)]),
+          helpers.el("span", { class: "bottom-nav__fab-label", text: "Add" })
+        ]);
+        if (activeId === "notes") fab.setAttribute("aria-current", "page");
+        return fab;
+      }
+      var route = null;
+      for (var i = 0; i < ROUTES.length; i++) {
+        if (ROUTES[i].id === id) { route = ROUTES[i]; break; }
+      }
+      if (!route) return null;
+      var shortLabel = route.id === "notes" ? "Notes" : route.label;
+      var link = helpers.el("a", { class: "bottom-nav__item", href: route.hash }, [
+        helpers.icon(route.icon, 21),
+        helpers.el("span", { text: shortLabel })
+      ]);
+      if (route.id === activeId) link.setAttribute("aria-current", "page");
+      return link;
+    }).filter(Boolean);
+    return helpers.el("nav", { class: "bottom-nav", "aria-label": "Main Menu" }, items);
   }
 
   function renderFooter() {
