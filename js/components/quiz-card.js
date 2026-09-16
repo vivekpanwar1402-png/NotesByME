@@ -20,16 +20,16 @@
       label: "Date → Event",
       questionField: "date",
       answerField: "event",
-      prompt: "इस Date से जुड़ी सही Event कौन-सी है?",
-      answerHint: "सही Event चुनें"
+      prompt: "Which event is linked to this date?",
+      answerHint: "Choose the correct event"
     },
     "event-to-date": {
       id: "event-to-date",
       label: "Event → Date",
       questionField: "event",
       answerField: "date",
-      prompt: "यह Event कब हुई थी?",
-      answerHint: "सही Date चुनें"
+      prompt: "When did this event happen?",
+      answerHint: "Choose the correct date"
     }
   };
 
@@ -200,7 +200,7 @@
           H.el("span", {}, [
             H.el("span", {
               class: "quiz-feedback__title",
-              text: isRight ? "सही उत्तर!" : "सही उत्तर: " + question.correctText
+              text: isRight ? "Correct!" : "Correct answer: " + question.correctText
             }),
             H.el("span", { text: question.explanation })
           ])
@@ -228,7 +228,7 @@
               ])
             ]
           )
-        : H.el("span", { class: "text-sm text-subtle", text: "एक Options चुनें" })
+        : H.el("span", { class: "text-sm text-subtle", text: "Choose one option" })
     ]);
 
     return H.el("div", { class: "quiz-shell" }, [
@@ -254,19 +254,19 @@
 
     var band = {
       title: "Keep Practicing",
-      text: "पहले Revision करें, फिर यही Quiz दोबारा दें। हर प्रयास में सुधार दिखेगा।",
+      text: "Revise first, then retry this quiz. Every attempt will show improvement.",
       icon: "revision"
     };
     if (pct >= 80) {
       band = {
         title: "Excellent!",
-        text: "इन तिथियों पर आपकी पकड़ मजबूत है। अब दूसरा Mode आज़माकर देखें।",
+        text: "You have a strong grip on these dates. Now try the other mode.",
         icon: "trophy"
       };
     } else if (pct >= 60) {
       band = {
         title: "Good Try",
-        text: "जो Questions ग़लत हुए, उनकी तिथियाँ इतिहास पेज से दोबारा पढ़ें और फिर Quiz दोहराएँ।",
+        text: "Re-read the dates you missed from the History page, then repeat the quiz.",
         icon: "checkCircle"
       };
     }
@@ -292,7 +292,7 @@
             if (typeof handlers.onSwitchMode === "function") handlers.onSwitchMode();
           }
         },
-        [H.el("span", { class: "btn__label" }, [H.icon("shuffle", 16), "Mode बदलें"])]
+        [H.el("span", { class: "btn__label" }, [H.icon("shuffle", 16), "Switch mode"])]
       )
     ]);
 
@@ -315,7 +315,7 @@
         H.el("p", { class: "quiz-result__text", text: band.text }),
         H.el("p", {
           class: "text-sm text-subtle",
-          text: "These marks have been saved to your Progress page।"
+          text: "These marks have been saved to your Progress page."
         }),
         actions
       ])

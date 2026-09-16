@@ -129,7 +129,7 @@
             ])
           ]),
           item.approximate
-            ? H.el("span", { class: "text-sm text-subtle", text: "This date is considered approximate।" })
+            ? H.el("span", { class: "text-sm text-subtle", text: "This date is considered approximate." })
             : null
         ])
       ])
@@ -194,14 +194,14 @@
       markButton.appendChild(
         H.el("span", { class: "btn__label" }, [
           H.icon("check", 16),
-          "Reviewed के रूप में चिह्नित करें"
+          "Mark as reviewed"
         ])
       );
       markButton.addEventListener("click", function () {
         NB.storage.markReviewed(item.id);
         H.clear(markButton);
         markButton.appendChild(
-          H.el("span", { class: "btn__label" }, [H.icon("checkCircle", 16), "Reviewed के रूप में जोड़ लिया गया"])
+          H.el("span", { class: "btn__label" }, [H.icon("checkCircle", 16), "Marked as reviewed"])
         );
         markButton.disabled = true;
         if (typeof settings.onReviewed === "function") settings.onReviewed(item);

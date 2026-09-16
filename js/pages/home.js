@@ -252,6 +252,7 @@
 
   function renderQuickActions() {
     var actions = [
+      { icon: "layers", title: "Subjects", tint: "blue", route: "subjects" },
       { icon: "book", title: "History", tint: "blue", route: "history" },
       { icon: "quiz", title: "Quiz", tint: "purple", route: "quiz" },
       { icon: "revision", title: "Revision", tint: "cyan", route: "revision" },

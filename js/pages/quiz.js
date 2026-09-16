@@ -83,8 +83,8 @@
     if (!state.questions) {
       container.appendChild(
         NB.ui.emptyState(
-          "Quiz अभी शुरू नहीं हुआ",
-          "ऊपर से Mode चुनें — Date से Event, या Event से Date — और \"Quiz Start\" दबाएँ। The correct answer and a short explanation will be shown after each question।",
+          "Quiz has not started yet",
+          "Choose a mode above — Date to Event, or Event to Date — and press \"Start Quiz\". The correct answer and a short explanation will be shown after each question.",
           null,
           null,
           "quiz"
@@ -137,7 +137,7 @@
   }
 
   function chapterSelect() {
-    var options = [{ id: "all", number: "", title: "All Chapter" }].concat(
+    var options = [{ id: "all", number: "", title: "All chapters" }].concat(
       NB.data.history.chapters
     );
 
@@ -146,7 +146,7 @@
       {
         class: "select",
         id: "quiz-chapter",
-        "aria-label": "Quiz का Chapter चुनें",
+        "aria-label": "Choose a quiz chapter",
         onchange: function () {
           state.chapter = select.value;
           savePrefs();
@@ -186,19 +186,19 @@
 
   function render(root) {
     var setup = H.el("div", { class: "card" }, [
-      NB.ui.sectionTitle("Quiz सेटअप", "quiz"),
+      NB.ui.sectionTitle("Quiz setup", "quiz"),
       H.el("p", {
         class: "card__text",
         text:
           NB.quiz.DEFAULT_LENGTH +
-          " Questions · " +
+          " questions · " +
           NB.quiz.OPTION_COUNT +
-          " Options · Instant feedback on every answer। Mode या Chapter बदलते ही नया Quiz शुरू हो जाएगा।"
+          " options · Instant feedback on every answer. Changing the mode or chapter starts a new quiz."
       }),
       modeToggle(),
       chapterSelect(),
       H.el("button", { class: "btn btn--primary btn--lg", type: "button", onclick: start }, [
-        H.el("span", { class: "btn__label" }, [H.icon("arrowRight", 17), "Quiz Start"])
+        H.el("span", { class: "btn__label" }, [H.icon("arrowRight", 17), "Start Quiz"])
       ])
     ]);
 
@@ -212,7 +212,7 @@
           H.el("p", {
             class: "page-head__sub",
             text:
-              "Practice based on history dates। सही उत्तर चुनकर अपनी तैयारी जाँचें — स्कोर Progress पेज में अपने आप जुड़ जाएगा।"
+              "Practice based on history dates. Choose the correct answer to check your preparation — scores are added to the Progress page automatically."
           })
         ]),
         setup,

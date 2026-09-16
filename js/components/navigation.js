@@ -13,6 +13,7 @@
 
   var ROUTES = [
     { id: "home", hash: "#/home", label: "Home", icon: "home" },
+    { id: "subjects", hash: "#/subjects", label: "Subjects", icon: "layers" },
     { id: "history", hash: "#/history", label: "History", icon: "book" },
     { id: "quiz", hash: "#/quiz", label: "Quiz", icon: "quiz" },
     { id: "revision", hash: "#/revision", label: "Revision", icon: "revision" },
@@ -23,6 +24,7 @@
   ];
 
   var themeButtons = [];
+  var shellRefs = { header: null, bottomNav: null };
 
   /* ---------------------------------------------------------- theming ---- */
 
@@ -51,8 +53,11 @@
   function refreshThemeButtons() {
     var helpers = NB.helpers;
     var isDark = theme.current() === "dark";
+    // Prune detached buttons so repeated shell renders cannot leak refs.
+    themeButtons = themeButtons.filter(function (button) {
+      return button && button.parentNode && document.contains(button);
+    });
     themeButtons.forEach(function (button) {
-      if (!button || !button.parentNode) return;
       helpers.clear(button);
       button.appendChild(helpers.icon(isDark ? "sun" : "moon", 18));
       button.setAttribute("aria-label", isDark ? "Turn on Light Mode" : "Turn on Dark Mode");
@@ -89,7 +94,6 @@
 
   function renderHeader(activeId) {
     var helpers = NB.helpers;
-
     var brand = helpers.el("a", { class: "brand", href: "#/home" }, [
       helpers.el("span", { class: "brand__mark", text: "N" }),
       helpers.el("span", { class: "brand__text" }, [
@@ -166,6 +170,25 @@
     return helpers.el("nav", { class: "bottom-nav", "aria-label": "Main Menu" }, items);
   }
 
+  function markActive(container, routeId) {
+    if (!container) return;
+    var helpers = NB.helpers;
+    var links = helpers.qsa("a[href^='#/']", container);
+    links.forEach(function (link) {
+      var href = link.getAttribute("href") || "";
+      var id = href.replace(/^#\/?/, "");
+      var active = id === routeId || href === "#/" + routeId;
+      if (active) link.setAttribute("aria-current", "page");
+      else link.removeAttribute("aria-current");
+    });
+  }
+
+  // Patch active states without rebuilding the shell (smooth SPA nav).
+  function setActive(routeId) {
+    markActive(shellRefs.header, routeId);
+    markActive(shellRefs.bottomNav, routeId);
+  }
+
   function renderFooter() {
     var helpers = NB.helpers;
     var history = NB.data && NB.data.history ? NB.data.history : null;
@@ -175,12 +198,21 @@
     ]);
   }
 
+  // Called by app.js right after renderHeader/renderBottomNav so setActive()
+  // can patch them on later route changes.
+  function registerShell(headerEl, bottomNavEl) {
+    shellRefs.header = headerEl || null;
+    shellRefs.bottomNav = bottomNavEl || null;
+  }
+
   NB.nav = {
     ROUTES: ROUTES,
     theme: theme,
     renderHeader: renderHeader,
     renderBottomNav: renderBottomNav,
     renderFooter: renderFooter,
+    registerShell: registerShell,
+    setActive: setActive,
     routeById: function (id) {
       return (
         ROUTES.filter(function (route) {

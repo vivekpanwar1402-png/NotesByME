@@ -121,26 +121,127 @@
 
   function reviewedMap() {
     var value = readJSON("local", KEYS.reviewed, {});
-    return value && typeof value === "object" ? value : {};
+    var map = value && typeof value === "object" ? value : {};
+    return migrateReviewedMap(map);
+  }
+
+  // Milestone 1 migration (backward-safe, read-time only):
+  // legacy keys are raw history ids ("cu-1789-..."); new keys are namespaced
+  // ("history:<rawId>"). Both resolve to the same record via NB.content, so
+  // we keep legacy keys untouched here and only normalize in-memory dups.
+  // Returns the map object (never null). Never deletes user data.
+  function migrateReviewedMap(map) {
+    try {
+      if (NB.content && NB.content.parseUid) {
+        var seen = {};
+        Object.keys(map).forEach(function (key) {
+          var parsed = NB.content.parseUid(key);
+          if (!parsed || !parsed.rawId) return;
+          if (seen[parsed.rawId] && seen[parsed.rawId] !== key) {
+            // Same record under two keys: keep the newest entry in memory.
+            var keep = key;
+            var other = seen[parsed.rawId];
+            var a = map[key] || {};
+            var b = map[other] || {};
+            var aTime = a.lastAt || a.at || "";
+            var bTime = b.lastAt || b.at || "";
+            keep = aTime >= bTime ? key : other;
+            var drop = keep === key ? other : key;
+            // In-memory only — persisted map is rewritten on next markReviewed.
+            map[keep] = map[keep] || map[drop];
+          } else {
+            seen[parsed.rawId] = key;
+          }
+        });
+      }
+    } catch (error) {
+      /* fail safe: return map unmigrated */
+    }
+    return map;
+  }
+
+  function normalizeReviewedKey(dateId) {
+    // New records are namespaced via NB.content when available.
+    try {
+      if (NB.content && NB.content.toUid && dateId) {
+        var parsed = NB.content.parseUid(dateId);
+        if (parsed && parsed.rawId) return NB.content.toUid(parsed.subjectId, parsed.rawId);
+      }
+    } catch (error) {
+      /* fall through to raw id */
+    }
+    return dateId;
   }
 
   function markReviewed(dateId) {
     if (!dateId) return reviewedMap();
     var map = reviewedMap();
-    var entry = map[dateId] || { count: 0, lastAt: null };
+    var key = normalizeReviewedKey(dateId);
+    // If the same record already exists under the legacy raw id, fold it
+    // into the namespaced key (merge counts, keep newest timestamp).
+    try {
+      if (NB.content && NB.content.parseUid) {
+        var parsed = NB.content.parseUid(key);
+        if (parsed && parsed.rawId && parsed.rawId !== key && map[parsed.rawId] && !map[key]) {
+          var legacy = map[parsed.rawId];
+          map[key] = {
+            count: (legacy.count || 0) + 1,
+            lastAt: new Date().toISOString()
+          };
+          writeJSON("local", KEYS.reviewed, map);
+          return map;
+        }
+      }
+    } catch (error) {
+      /* fall through to simple path */
+    }
+    var entry = map[key] || { count: 0, lastAt: null };
     entry.count += 1;
     entry.lastAt = new Date().toISOString();
-    map[dateId] = entry;
+    map[key] = entry;
     writeJSON("local", KEYS.reviewed, map);
     return map;
   }
 
   function reviewedCount() {
-    return Object.keys(reviewedMap()).length;
+    var map = reviewedMap();
+    // Dedupe legacy + namespaced keys pointing at the same record.
+    try {
+      if (NB.content && NB.content.parseUid) {
+        var seen = {};
+        var count = 0;
+        Object.keys(map).forEach(function (key) {
+          var parsed = NB.content.parseUid(key);
+          var raw = parsed && parsed.rawId ? parsed.subjectId + ":" + parsed.rawId : key;
+          if (seen[raw]) return;
+          seen[raw] = true;
+          count += 1;
+        });
+        return count;
+      }
+    } catch (error) {
+      /* fall through */
+    }
+    return Object.keys(map).length;
   }
 
   function isReviewed(dateId) {
-    return Boolean(reviewedMap()[dateId]);
+    if (!dateId) return false;
+    var map = reviewedMap();
+    if (map[dateId]) return true;
+    try {
+      if (NB.content && NB.content.parseUid) {
+        var parsed = NB.content.parseUid(dateId);
+        if (parsed && parsed.rawId) {
+          var uid = NB.content.toUid(parsed.subjectId, parsed.rawId);
+          if (map[uid]) return true;
+          if (map[parsed.rawId]) return true;
+        }
+      }
+    } catch (error) {
+      /* ignore */
+    }
+    return false;
   }
 
   function resetReviewed() {

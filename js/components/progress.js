@@ -37,7 +37,7 @@
     return H.el("div", { class: "ring", style: "--pct:" + H.percent(pct, 100) }, [
       H.el("span", { class: "ring__inner" }, [
         H.el("span", { class: "ring__value", text: H.percent(pct, 100) + "%" }),
-        H.el("span", { class: "ring__label", text: label || "पूरा" })
+        H.el("span", { class: "ring__label", text: label || "Done" })
       ])
     ]);
   }
@@ -95,7 +95,7 @@
       H.el("div", { class: "coming-card__head" }, [
         H.icon(iconName || "sparkle", 16),
         H.el("span", { text: title }),
-        H.el("span", { class: "tag-soon", text: "जल्द" })
+        H.el("span", { class: "tag-soon", text: "Soon" })
       ]),
       H.el("p", { class: "coming-card__text", text: text })
     ]);

@@ -12,8 +12,8 @@
   var H = NB.helpers;
 
   var LEVELS = [
-    { id: "must", label: "अवश्य याद रखें", values: ["must"] },
-    { id: "must-important", label: "अवश्य + महत्वपूर्ण", values: ["must", "important"] }
+    { id: "must", label: "Must remember", values: ["must"] },
+    { id: "must-important", label: "Must + Important", values: ["must", "important"] }
   ];
 
   var state = { level: LEVELS[0].id, deck: [], index: 0, revealed: false, rounds: 0 };
@@ -60,7 +60,7 @@
 
   function frontFace(item) {
     return H.el("div", { class: "flashcard__front" }, [
-      H.el("span", { class: "flashcard__label", text: "इस Date को What happened था?" }),
+      H.el("span", { class: "flashcard__label", text: "What happened on this date?" }),
       H.el("p", { class: "flashcard__date", text: item.date }),
       H.el("span", { class: "badge badge--neutral", text: "Chapter " + NB.cards.chapterNumber(item.chapter) }),
       H.el(
@@ -87,7 +87,7 @@
         ]),
         H.el("button", { class: "btn btn--primary", type: "button", onclick: next }, [
           H.el("span", { class: "btn__label" }, [
-            H.el("span", { text: "अगली तिथि" }),
+            H.el("span", { text: "Next date" }),
             H.icon("arrowRight", 16)
           ])
         ])
@@ -100,9 +100,9 @@
       NB.ui.emptyState(
         "Session complete!",
         state.rounds > 0
-          ? "You went through this deck " + (state.rounds + 1) + " times। Get a new orderेकर फिर से Start या Quiz में अपनी तैयारी जाँचें।"
-          : "Good job! डेक दोबारा Start या Quiz देकर अपनी तैयारी जाँचें।",
-        "फिर से Start",
+          ? "You went through this deck " + (state.rounds + 1) + " times. Shuffle for a new order, or check your preparation in the Quiz."
+          : "Good job! Restart the deck or check your preparation in the Quiz.",
+        "Restart",
         function () {
           buildDeck();
           renderCard();
@@ -118,8 +118,8 @@
 
     refs.counter.textContent =
       state.deck.length
-        ? "तिथि " + Math.min(state.index + 1, state.deck.length) + " / " + state.deck.length
-        : "कोई तिथि नहीं";
+        ? "Date " + Math.min(state.index + 1, state.deck.length) + " / " + state.deck.length
+        : "No dates";
 
     if (!item) {
       container.appendChild(completionCard());
@@ -140,7 +140,7 @@
   function levelToggle() {
     var row = H.el(
       "div",
-      { class: "segmented", role: "group", "aria-label": "Revision का स्तर" },
+      { class: "segmented", role: "group", "aria-label": "Revision level" },
       LEVELS.map(function (level) {
         var active = state.level === level.id;
         return H.el("button", {
@@ -225,14 +225,14 @@
     root.appendChild(
       H.el("div", { class: "page" }, [
         H.el("div", { class: "page-head" }, [
-          H.el("p", { class: "page-head__eyebrow", text: "तेज़ revision · इतिहास" }),
+          H.el("p", { class: "page-head__eyebrow", text: "Quick revision · History" }),
           H.el("h1", { class: "page-head__title", text: "Revision" }),
           H.el("p", {
             class: "page-head__sub",
             text:
-              "कुल " +
+              "Total " +
               available +
-              " dates are in this level। Date देखकर Event याद करें, फिर Check yourself by viewing the answer। उत्तर देखने पर वह तिथि Progress में Reviewed दर्ज हो जाएगी।"
+              " dates are in this level. Look at the date, recall the event, then check yourself by viewing the answer. Viewing the answer marks that date as Reviewed in Progress."
           })
         ]),
         H.el("div", { class: "row-flex" }, [levelToggle(), shuffleButton]),

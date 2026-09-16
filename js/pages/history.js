@@ -309,7 +309,7 @@
       class: "btn btn--ghost btn--sm",
       type: "button",
       hidden: true,
-      text: "फ़िल्टर हटाएँ",
+      text: "Clear filters",
       onclick: resetFilters
     });
 
@@ -317,9 +317,9 @@
       meta.sourceBook +
       " · Total " +
       total +
-      " dates · अवश्य याद रखें: " +
+      " dates · Must remember: " +
       mustCount +
-      "। खोजें, छाँटें और किसी भी तिथि पर टैप करके View details।";
+      ". Search, filter and tap any date to view details.";
 
     var page = helpers.el("div", { class: "page" }, [
       helpers.el("div", { class: "page-head" }, [

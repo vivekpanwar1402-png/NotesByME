@@ -88,12 +88,12 @@
 
     var page = H.el("div", { class: "page" }, [
       H.el("div", { class: "page-head" }, [
-        H.el("p", { class: "page-head__eyebrow", text: "आपका हिसाब" }),
+        H.el("p", { class: "page-head__eyebrow", text: "Your summary" }),
         H.el("h1", { class: "page-head__title", text: "Progress" }),
         H.el("p", {
           class: "page-head__sub",
           text:
-            "यह जानकारी आपके ही डिवाइस में (लोकल स्टोरेज) सुरक्षित रहती है — कोई खाता या इंटरनेट ज़रूरी नहीं।"
+            "This information stays on your device (local storage) — no account or internet needed."
         })
       ])
     ]);
@@ -154,7 +154,7 @@
         NB.ui.sectionTitle("Reset Progress", "alert"),
         H.el("p", {
           class: "text-sm text-subtle",
-          text: "Dates Reviewed और All Quiz स्कोर मिट जाएँगे। यह काम वापस नहीं हो सकता।"
+          text: "Reviewed dates and all quiz scores will be cleared. This cannot be undone."
         }),
         H.el("div", { class: "row-flex" }, [
           H.el(
@@ -163,7 +163,7 @@
               class: "btn btn--danger",
               type: "button",
               onclick: function () {
-                var sure = window.confirm("पक्का? All Dates Reviewed और Quiz स्कोर मिट जाएँगे।");
+                var sure = window.confirm("Are you sure? All reviewed dates and quiz scores will be cleared.");
                 if (!sure) return;
                 NB.storage.resetAll();
                 H.clear(root);
