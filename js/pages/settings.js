@@ -9,6 +9,10 @@
   var I = NB.idb;
 
   function render(root) {
+    var noteCount = H.el("span", { class: "text-sm text-muted", text: "Notes: ..." });
+    var doubtCount = H.el("span", { class: "text-sm text-muted", text: "Doubts: ..." });
+    I.notes().then(function (list) { noteCount.textContent = "Notes: " + list.length; });
+    I.doubts().then(function (list) { doubtCount.textContent = "Doubts: " + list.length; });
     root.appendChild(H.el("div", { class: "page" }, [
       H.el("div", { class: "page-head" }, [
         H.el("p", { class: "page-head__eyebrow", text: "Settings" }),
@@ -52,8 +56,8 @@
             text: "Export Data (JSON)"
           }),
           H.el("div", { class: "row-flex" }, [
-            H.el("span", { class: "text-sm text-muted", text: "Notes: " + I.notes().length }),
-            H.el("span", { class: "text-sm text-muted", text: "Doubts: " + I.doubts().length })
+            noteCount,
+            doubtCount
           ])
         ])
       ]),

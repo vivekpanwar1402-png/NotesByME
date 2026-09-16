@@ -31,7 +31,9 @@
         request.onerror = function () { reject(request.error); };
         request.onsuccess = function () {
           db = request.result;
-          loadAllFromDB().then(resolve);
+          loadAllFromDB().then(function () {
+            resolve(db);
+          });
         };
         request.onupgradeneeded = function (event) {
           var target = event.target.result;
@@ -57,10 +59,96 @@
     return dbReady;
   }
 
+  /* ----------------------------------------------------------- internal --- */
+
+  function generateId() {
+    return "nbme-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 8);
+  }
+
+  function saveToDB(storeName, record) {
+    return openDB().then(function () {
+      // openDB() only resolves once the module-level `db` handle is assigned.
+      return new Promise(function (resolve, reject) {
+        var tx = db.transaction(storeName, "readwrite");
+        tx.objectStore(storeName).put(record);
+        tx.oncomplete = function () { resolve(record); };
+        tx.onerror = function () { reject(tx.error); };
+        tx.onabort = function () { reject(tx.error); };
+      });
+    }).catch(function () {
+      // IndexedDB unavailable: the in-memory copy stays authoritative.
+      return record;
+    });
+  }
+
+  function removeFromDB(storeName, id) {
+    return openDB().then(function () {
+      // openDB() only resolves once the module-level `db` handle is assigned.
+      return new Promise(function (resolve, reject) {
+        var tx = db.transaction(storeName, "readwrite");
+        tx.objectStore(storeName).delete(id);
+        tx.oncomplete = function () { resolve(true); };
+        tx.onerror = function () { reject(tx.error); };
+        tx.onabort = function () { reject(tx.error); };
+      });
+    }).catch(function () {
+      return false;
+    });
+  }
+
+  function loadAllFromDB() {
+    if (!db) return Promise.resolve();
+
+    function readAll(storeName) {
+      return new Promise(function (resolve) {
+        var records = [];
+        try {
+          var request = db.transaction(storeName, "readonly").objectStore(storeName).openCursor();
+          request.onsuccess = function () {
+            var cursor = request.result;
+            if (!cursor) { resolve(records); return; }
+            records.push(cursor.value);
+            cursor.continue();
+          };
+          request.onerror = function () { resolve(records); };
+        } catch (error) {
+          resolve(records);
+        }
+      });
+    }
+
+    function merge(target, records) {
+      records.forEach(function (record) {
+        if (!record || !record.id) return;
+        for (var i = 0; i < target.length; i++) {
+          if (target[i].id === record.id) return;
+        }
+        target.push(record);
+      });
+    }
+
+    return Promise.all([readAll(STORE_NOTES), readAll(STORE_DOUBTS), readAll(STORE_IMAGES)])
+      .then(function (results) {
+        merge(memory.notes, results[0]);
+        merge(memory.doubts, results[1]);
+        merge(memory.images, results[2]);
+      });
+  }
+
+  function whenReady() {
+    // Resolves once IndexedDB is open and persisted records are in memory.
+    // A failed open falls back to the in-memory state instead of rejecting.
+    return openDB().catch(function () {
+      return null;
+    });
+  }
+
   /* ------------------------------------------------------------- notes --- */
 
   function notes() {
-    return memory.notes.slice();
+    return whenReady().then(function () {
+      return memory.notes.slice();
+    });
   }
 
   function getNote(id) {
@@ -82,11 +170,10 @@
       if (memory.notes[i].id === id) {
         var updated = Object.assign({}, memory.notes[i], updates, { updatedAt: new Date().toISOString() });
         memory.notes[i] = updated;
-        saveToDB(STORE_NOTES, updated);
-        return updated;
+        return saveToDB(STORE_NOTES, updated).then(function () { return updated; });
       }
     }
-    return null;
+    return Promise.resolve(null);
   }
 
   function deleteNote(id) {
@@ -94,10 +181,9 @@
     for (var i = 0; i < memory.notes.length; i++) {
       if (memory.notes[i].id === id) { index = i; break; }
     }
-    if (index === -1) return false;
+    if (index === -1) return Promise.resolve(false);
     memory.notes.splice(index, 1);
-    removeFromDB(STORE_NOTES, id);
-    return true;
+    return removeFromDB(STORE_NOTES, id).then(function () { return true; });
   }
 
   function searchNotes(query) {
@@ -120,11 +206,13 @@
       return true;
     });
   }
-  }
+
   /* ------------------------------------------------------------- doubts --- */
 
   function doubts() {
-    return memory.doubts.slice();
+    return whenReady().then(function () {
+      return memory.doubts.slice();
+    });
   }
 
   function getDoubt(id) {
@@ -148,11 +236,10 @@
       if (memory.doubts[i].id === id) {
         var updated = Object.assign({}, memory.doubts[i], updates, { updatedAt: new Date().toISOString() });
         memory.doubts[i] = updated;
-        saveToDB(STORE_DOUBTS, updated);
-        return updated;
+        return saveToDB(STORE_DOUBTS, updated).then(function () { return updated; });
       }
     }
-    return null;
+    return Promise.resolve(null);
   }
 
   function resolveDoubt(id) {
@@ -168,10 +255,9 @@
     for (var i = 0; i < memory.doubts.length; i++) {
       if (memory.doubts[i].id === id) { index = i; break; }
     }
-    if (index === -1) return false;
+    if (index === -1) return Promise.resolve(false);
     memory.doubts.splice(index, 1);
-    removeFromDB(STORE_DOUBTS, id);
-    return true;
+    return removeFromDB(STORE_DOUBTS, id).then(function () { return true; });
   }
 
   function searchDoubts(query) {
@@ -198,7 +284,9 @@
   /* ------------------------------------------------------------- images --- */
 
   function images() {
-    return memory.images.slice();
+    return whenReady().then(function () {
+      return memory.images.slice();
+    });
   }
 
   function getImage(id) {
@@ -220,10 +308,9 @@
     for (var i = 0; i < memory.images.length; i++) {
       if (memory.images[i].id === id) { index = i; break; }
     }
-    if (index === -1) return false;
+    if (index === -1) return Promise.resolve(false);
     memory.images.splice(index, 1);
-    removeFromDB(STORE_IMAGES, id);
-    return true;
+    return removeFromDB(STORE_IMAGES, id).then(function () { return true; });
   }
 
   function searchImages(query) {
@@ -239,6 +326,10 @@
   /* ------------------------------------------------------------- export --- */
 
   function exportAllData() {
+    return whenReady().then(buildExportData);
+  }
+
+  function buildExportData() {
     var exportNotes = JSON.stringify(memory.notes, null, 2);
     var exportDoubts = JSON.stringify(memory.doubts, null, 2);
     var exportImagesMeta = JSON.stringify(memory.images.map(function (img) {
